@@ -50,4 +50,3 @@ pip install -r requirements.txt
   ```bash
   python generator/app.py
   ```
-Sayan
