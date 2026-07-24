@@ -1,0 +1,21 @@
+cat > .gitignore << 'EOF'
+# Data (too large for Git — use DVC + Google Drive instead)
+data/
+dataset/train/
+dataset/val/
+dataset/test/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
