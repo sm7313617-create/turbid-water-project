@@ -1,6 +1,7 @@
 cat > .gitignore << 'EOF'
 # Data (too large for Git — use DVC + Google Drive instead)
-data/
+data/*
+!data/*.dvc
 dataset/train/
 dataset/val/
 dataset/test/
