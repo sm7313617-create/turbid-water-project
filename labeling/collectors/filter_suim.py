@@ -34,7 +34,7 @@ def filter_suim(
     min_fv_pixels: int = 500,
     dry_run: bool = False,
     output_raw_dir: str = "data/raw",
-    output_annotations_dir: str = "data/annotations",
+    output_annotations_dir: str = "data/annotations/fauna/suim_masks",
     log_dir: str = "labeling/collectors/logs",
 ):
     """

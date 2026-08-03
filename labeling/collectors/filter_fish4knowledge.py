@@ -23,7 +23,7 @@ def filter_fish4knowledge(
     min_fish_pixels: int = 0,
     dry_run: bool = False,
     output_raw_dir: str = "data/raw",
-    output_annotations_dir: str = "data/annotations",
+    output_annotations_dir: str = "data/annotations/fauna/f4k_masks",
     log_dir: str = "labeling/collectors/logs",
 ):
     """
