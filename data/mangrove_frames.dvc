@@ -1,0 +1,6 @@
+outs:
+- md5: 70695ce3f5207379c595ff33e8a27691.dir
+  size: 32437991
+  nfiles: 365
+  hash: md5
+  path: mangrove_frames
