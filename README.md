@@ -19,6 +19,17 @@ Underwater vision systems face severe degradation due to light absorption, backs
 
 ---
 
+## Tech Stack
+
+* **Core Language & Scientific Computing**: Python 3.12, NumPy, SciPy, Pandas
+* **Computer Vision & Image Processing**: OpenCV (`cv2`), Pillow (`PIL`)
+* **Interactive Simulator Interface**: Streamlit
+* **Data Versioning & Remote Storage**: DVC (Data Version Control), Google Drive Remote (`dvc-gdrive`)
+* **Quality Assurance & Perceptual Hashing**: ImageHash (pHash algorithm), `tqdm`
+* **Data Annotation Specifications**: COCO 1.0 JSON Format, Binary PNG Instance Masks
+
+---
+
 ## Physics Model
 
 The generator simulates optical degradation using the **Jaffe-McGlamery Underwater Image Formation Model**:
