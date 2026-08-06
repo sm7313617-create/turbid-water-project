@@ -6,11 +6,11 @@
   <b>A physically-grounded underwater optical degradation simulator and benchmark dataset for computer vision under severe aquatic turbidity.</b>
 </p>
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Streamlit UI](https://img.shields.io/badge/Streamlit-Interactive_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
-[![DVC Tracked](https://img.shields.io/badge/DVC-Data_Versioned-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
-[![QA Verified](https://img.shields.io/badge/QA_Audit-Passed_100%25-10B981?style=for-the-badge&logo=githubactions&logoColor=white)](scripts/audit_fauna_contamination.py)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-1E293B?style=for-the-badge&logo=python&logoColor=38BDF8)](https://python.org)
+[![Streamlit UI](https://img.shields.io/badge/Streamlit-Interactive_App-1E293B?style=for-the-badge&logo=streamlit&logoColor=38BDF8)](generator/app.py)
+[![DVC Tracked](https://img.shields.io/badge/DVC-Data_Versioned-1E293B?style=for-the-badge&logo=dvc&logoColor=38BDF8)](https://dvc.org)
+[![QA Verified](https://img.shields.io/badge/QA_Audit-Passed_100%25-1E293B?style=for-the-badge&logo=githubactions&logoColor=38BDF8)](scripts/audit_fauna_contamination.py)
+[![License: MIT](https://img.shields.io/badge/License-MIT-1E293B?style=for-the-badge&logo=open-access&logoColor=38BDF8)](LICENSE)
 
 <br/>
 
@@ -35,21 +35,21 @@
 <div align="center">
 
 ### Core Computation & Math
-[![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![NumPy](https://img.shields.io/badge/NumPy_Array_Ops-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org)
-[![SciPy](https://img.shields.io/badge/SciPy_Math-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)](https://scipy.org)
-[![Pandas](https://img.shields.io/badge/Pandas_DataFrames-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org)
+[![Python](https://img.shields.io/badge/Python_3.12-1E293B?style=for-the-badge&logo=python&logoColor=38BDF8)](https://python.org)
+[![NumPy](https://img.shields.io/badge/NumPy_Array_Ops-0F172A?style=for-the-badge&logo=numpy&logoColor=38BDF8)](https://numpy.org)
+[![SciPy](https://img.shields.io/badge/SciPy_Math-1E293B?style=for-the-badge&logo=scipy&logoColor=38BDF8)](https://scipy.org)
+[![Pandas](https://img.shields.io/badge/Pandas_DataFrames-0F172A?style=for-the-badge&logo=pandas&logoColor=38BDF8)](https://pandas.pydata.org)
 
 ### Vision & Degradation Engine
-[![OpenCV](https://img.shields.io/badge/OpenCV_Image_Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
-[![Pillow](https://img.shields.io/badge/Pillow_PIL-013243?style=for-the-badge&logo=python&logoColor=white)](https://python-pillow.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit_Interactive_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
+[![OpenCV](https://img.shields.io/badge/OpenCV_Image_Processing-1E293B?style=for-the-badge&logo=opencv&logoColor=38BDF8)](https://opencv.org)
+[![Pillow](https://img.shields.io/badge/Pillow_PIL-0F172A?style=for-the-badge&logo=python&logoColor=38BDF8)](https://python-pillow.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit_Interactive_App-1E293B?style=for-the-badge&logo=streamlit&logoColor=38BDF8)](generator/app.py)
 
 ### Data Engineering & Storage
-[![DVC](https://img.shields.io/badge/DVC_Data_Version Control-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
-[![Google Drive](https://img.shields.io/badge/Google_Drive_Remote_Storage-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com)
-[![ImageHash](https://img.shields.io/badge/ImageHash_pHash_QA-10B981?style=for-the-badge&logo=hashnode&logoColor=white)](scripts/audit_fauna_contamination.py)
-[![COCO Format](https://img.shields.io/badge/COCO_1.0_JSON-00599C?style=for-the-badge&logo=json&logoColor=white)](dataset/dataset_card.md)
+[![DVC](https://img.shields.io/badge/DVC_Data_Versioning-0F172A?style=for-the-badge&logo=dvc&logoColor=38BDF8)](https://dvc.org)
+[![Google Drive](https://img.shields.io/badge/Google_Drive_Remote-1E293B?style=for-the-badge&logo=googledrive&logoColor=38BDF8)](https://drive.google.com)
+[![ImageHash](https://img.shields.io/badge/ImageHash_pHash_QA-0F172A?style=for-the-badge&logo=hashnode&logoColor=38BDF8)](scripts/audit_fauna_contamination.py)
+[![COCO Format](https://img.shields.io/badge/COCO_1.0_JSON-1E293B?style=for-the-badge&logo=json&logoColor=38BDF8)](dataset/dataset_card.md)
 
 </div>
 
