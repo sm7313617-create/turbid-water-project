@@ -214,7 +214,7 @@ def main():
             "Choose Dataset Folder",
             ["data/raw (Fauna)", "data/mangrove_frames (Mangroves)"],
         )
-        folder_path = "data/raw" if "raw" in dataset_choice else "data/mangrove_frames"
+        folder_path = "data/raw" if (dataset_choice and "raw" in dataset_choice) else "data/mangrove_frames"
 
         if os.path.exists(folder_path):
             valid_exts = ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG")
@@ -226,11 +226,12 @@ def main():
             if files:
                 filenames = [os.path.basename(f) for f in files]
                 selected_filename = st.sidebar.selectbox("Select Image", filenames)
-                selected_path = os.path.join(folder_path, selected_filename)
+                if selected_filename:
+                    selected_path = os.path.join(folder_path, selected_filename)
 
-                pil_img = Image.open(selected_path).convert("RGB")
-                raw_image = np.array(pil_img)
-                image_name = selected_filename
+                    pil_img = Image.open(selected_path).convert("RGB")
+                    raw_image = np.array(pil_img)
+                    image_name = selected_filename
             else:
                 st.sidebar.warning(f"No image files found in '{folder_path}'.")
         else:
@@ -291,7 +292,7 @@ def main():
     with col1:
         with st.container(border=True):
             st.markdown("##### Clean Original Image")
-            st.image(raw_image, use_container_width=True, caption=f"File: {image_name}")
+            st.image(raw_image, width="stretch", caption=f"File: {image_name}")
 
     with col2:
         with st.container(border=True):
@@ -300,17 +301,17 @@ def main():
             with st.spinner("Simulating optical degradation..."):
                 degraded_float = degrade_image(
                     raw_image,
-                    turbidity_level=turbidity_level,
-                    depth_mode=depth_mode,
-                    beta_max_r=beta_max_r,
-                    beta_max_g=beta_max_g,
-                    beta_max_b=beta_max_b,
+                    turbidity_level=float(turbidity_level),
+                    depth_mode=str(depth_mode),
+                    beta_max_r=float(beta_max_r),
+                    beta_max_g=float(beta_max_g),
+                    beta_max_b=float(beta_max_b),
                 )
                 degraded_uint8 = to_uint8(degraded_float)
 
             st.image(
                 degraded_uint8,
-                use_container_width=True,
+                width="stretch",
                 caption=f"Depth Mode: '{depth_mode}'",
             )
 
@@ -320,16 +321,16 @@ def main():
     st.markdown("---")
     st.markdown("<div class='section-title'>Optical Diagnostics & Parameters</div>", unsafe_allow_html=True)
 
-    h, w = raw_image.shape[:2]
-    depth_map = generate_depth_map((h, w), mode=depth_mode)
+    h, w = int(raw_image.shape[0]), int(raw_image.shape[1])
+    depth_map = generate_depth_map((h, w), mode=str(depth_mode))
     t_rgb = get_per_channel_transmission(
         depth_map,
-        turbidity_level,
-        beta_max_r=beta_max_r,
-        beta_max_g=beta_max_g,
-        beta_max_b=beta_max_b,
+        float(turbidity_level),
+        beta_max_r=float(beta_max_r),
+        beta_max_g=float(beta_max_g),
+        beta_max_b=float(beta_max_b),
     )
-    A = get_ambient_light_color(turbidity_level)
+    A = get_ambient_light_color(float(turbidity_level))
 
     d_col1, d_col2, d_col3, d_col4 = st.columns(4)
 
@@ -340,7 +341,7 @@ def main():
         )
         ambient_box = np.zeros((24, 150, 3), dtype=np.uint8)
         ambient_box[:] = (A * 255).astype(np.uint8)
-        st.image(ambient_box, caption="Backscatter Tint", use_container_width=True)
+        st.image(ambient_box, caption="Backscatter Tint", width="stretch")
 
     with d_col2:
         st.metric(

@@ -40,12 +40,13 @@ relative data/ paths resolve correctly. It also works run from inside
 labeling/ - see PROJECT_ROOT below.)
 """
 
+import io
 import json
 import sys
 from pathlib import Path
 
 # Ensure UTF-8 output encoding for Windows terminals
-if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+if isinstance(sys.stdout, io.TextIOWrapper) and sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
     try:
         sys.stdout.reconfigure(encoding='utf-8')
     except Exception:

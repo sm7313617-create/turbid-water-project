@@ -22,15 +22,17 @@ OUTPUT:
 import os
 import sys
 import glob
+import io
 import random
 import shutil
 import json
 from pathlib import Path
 from PIL import Image
+
 import imagehash
 
 # Ensure UTF-8 output encoding for Windows terminals
-if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+if isinstance(sys.stdout, io.TextIOWrapper) and sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
     try:
         sys.stdout.reconfigure(encoding='utf-8')
     except Exception:
