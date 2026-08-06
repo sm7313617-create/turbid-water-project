@@ -77,30 +77,22 @@
 
 <div align="center">
 
-## Table of Contents
+<p align="center"><b>INDEX &bull; TABLE OF CONTENTS</b></p>
 
-<table>
-  <tr>
-    <td align="center"><a href="#overview"><b>01 &bull; OVERVIEW</b></a></td>
-    <td align="center"><a href="#target-classes--annotations"><b>02 &bull; TARGET CLASSES</b></a></td>
-    <td align="center"><a href="#tech-stack"><b>03 &bull; TECH STACK</b></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="#physics-model"><b>04 &bull; PHYSICS MODEL</b></a></td>
-    <td align="center"><a href="#degradation-samples"><b>05 &bull; DEGRADATION SAMPLES</b></a></td>
-    <td align="center"><a href="#dataset-statistics"><b>06 &bull; DATASET STATS</b></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="#project-structure"><b>07 &bull; PROJECT STRUCTURE</b></a></td>
-    <td align="center"><a href="#installation"><b>08 &bull; INSTALLATION</b></a></td>
-    <td align="center"><a href="#usage-3-ways"><b>09 &bull; USAGE GUIDE</b></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="#dataset-integrity"><b>10 &bull; DATA INTEGRITY</b></a></td>
-    <td align="center"><a href="#data-quality-notes"><b>11 &bull; DATA QUALITY</b></a></td>
-    <td align="center"><a href="#data-sources"><b>12 &bull; DATA SOURCES</b></a></td>
-  </tr>
-</table>
+<a href="#overview"><img src="https://img.shields.io/badge/01-OVERVIEW-101b33?style=for-the-badge&labelColor=e63946" alt="01 Overview"/></a>
+<a href="#target-classes--annotations"><img src="https://img.shields.io/badge/02-TARGET_CLASSES-101b33?style=for-the-badge&labelColor=e63946" alt="02 Target Classes"/></a>
+<a href="#tech-stack"><img src="https://img.shields.io/badge/03-TECH_STACK-101b33?style=for-the-badge&labelColor=e63946" alt="03 Tech Stack"/></a>
+<a href="#physics-model"><img src="https://img.shields.io/badge/04-PHYSICS_MODEL-101b33?style=for-the-badge&labelColor=e63946" alt="04 Physics Model"/></a>
+
+<a href="#degradation-samples"><img src="https://img.shields.io/badge/05-DEGRADATION_SAMPLES-101b33?style=for-the-badge&labelColor=e63946" alt="05 Degradation Samples"/></a>
+<a href="#dataset-statistics"><img src="https://img.shields.io/badge/06-DATASET_STATS-101b33?style=for-the-badge&labelColor=e63946" alt="06 Dataset Stats"/></a>
+<a href="#project-structure"><img src="https://img.shields.io/badge/07-PROJECT_STRUCTURE-101b33?style=for-the-badge&labelColor=e63946" alt="07 Structure"/></a>
+<a href="#installation"><img src="https://img.shields.io/badge/08-INSTALLATION-101b33?style=for-the-badge&labelColor=e63946" alt="08 Installation"/></a>
+
+<a href="#usage-3-ways"><img src="https://img.shields.io/badge/09-USAGE_GUIDE-101b33?style=for-the-badge&labelColor=e63946" alt="09 Usage Guide"/></a>
+<a href="#dataset-integrity"><img src="https://img.shields.io/badge/10-DATA_INTEGRITY-101b33?style=for-the-badge&labelColor=e63946" alt="10 Integrity"/></a>
+<a href="#data-quality-notes"><img src="https://img.shields.io/badge/11-DATA_QUALITY-101b33?style=for-the-badge&labelColor=e63946" alt="11 Data Quality"/></a>
+<a href="#data-sources"><img src="https://img.shields.io/badge/12-DATA_SOURCES-101b33?style=for-the-badge&labelColor=e63946" alt="12 Sources"/></a>
 
 </div>
 
