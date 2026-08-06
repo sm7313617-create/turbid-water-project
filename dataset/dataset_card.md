@@ -9,29 +9,38 @@ The dataset combines clear underwater scenes of **aquatic fauna** (fish, flora, 
 
 ## 2. Dataset Composition
 
-The dataset contains a total of **3,456 synthetic turbid images** generated from **864 unique base scenes** (500 aquatic fauna scenes and 364 mangrove root scenes). To prevent data leakage during model training and evaluation, all 4 turbid variants of any base scene are assigned exclusively to a single split.
+The dataset contains a total of **3,384 synthetic turbid images** generated from **846 unique base scenes** (482 aquatic fauna scenes and 364 mangrove root scenes). To prevent data leakage during model training and evaluation, all 4 turbid variants of any base scene—along with connected near-duplicate frame clusters—are assigned exclusively to a single split.
 
 ### Summary Table
 
 | Split | Class | turb0.2 | turb0.4 | turb0.6 | turb0.8 | Total Images |
 |:---|:---|:---|:---|:---|:---|:---|
 | **train** | `mangrove_root` | 255 | 255 | 255 | 255 | 1,020 |
-| **train** | `aquatic_fauna` | 350 | 350 | 350 | 350 | 1,400 |
-| **train** | **SUBTOTAL** | **605** | **605** | **605** | **605** | **2,420** |
+| **train** | `aquatic_fauna` | 337 | 337 | 337 | 337 | 1,348 |
+| **train** | **SUBTOTAL** | **592** | **592** | **592** | **592** | **2,368** |
 | | | | | | | |
 | **val** | `mangrove_root` | 54 | 54 | 54 | 54 | 216 |
-| **val** | `aquatic_fauna` | 74 | 74 | 74 | 74 | 296 |
-| **val** | **SUBTOTAL** | **128** | **128** | **128** | **128** | **512** |
+| **val** | `aquatic_fauna` | 71 | 71 | 71 | 71 | 284 |
+| **val** | **SUBTOTAL** | **125** | **125** | **125** | **125** | **500** |
 | | | | | | | |
 | **test** | `mangrove_root` | 55 | 55 | 55 | 55 | 220 |
-| **test** | `aquatic_fauna` | 76 | 76 | 76 | 76 | 304 |
-| **test** | **SUBTOTAL** | **131** | **131** | **131** | **131** | **524** |
+| **test** | `aquatic_fauna` | 74 | 74 | 74 | 74 | 296 |
+| **test** | **SUBTOTAL** | **129** | **129** | **129** | **129** | **516** |
 | | | | | | | |
-| **TOTAL**| **ALL CLASSES** | **864** | **864** | **864** | **864** | **3,456** |
+| **TOTAL**| **ALL CLASSES** | **846** | **846** | **846** | **846** | **3,384** |
 
 ---
 
-## 3. Annotation Formats
+## 3. Known Data Quality & QA Notes
+
+- **Quarantined Mislabeled Images**: During automated pHash quality assurance, 18 initial DeepFish stems (`deepfish_00001` through `deepfish_00018`) were identified as mislabeled mangrove underwater dive footage rather than genuine marine fish habitats. This mislabeling was confirmed via perceptual hashing (pHash, Hamming distance $\le 8$ bits) and verified with manual visual inspection. These 18 raw image files were quarantined to `data/raw/_quarantined_mangrove_mislabeled/`, their corresponding PNG masks were quarantined to `data/annotations/fauna/deepfish_masks/_quarantined_mangrove_mislabeled/`, and their 72 synthetic turbid variants were moved to `data/synthetic_excluded/_quarantined_mangrove_mislabeled/`.
+- **Final Active Fauna & Base Scene Count**: Excluding the 18 quarantined stems brings the active raw fauna image count to **482** (182 DeepFish + 150 SUIM + 150 F4K). Combined with 364 mangrove root scenes, the dataset comprises **846 total base scenes** $\times 4$ turbidity levels = **3,384 packaged synthetic images**.
+- **Near-Duplicate Grouping (Leakage Prevention)**: Video-derived public datasets (DeepFish and F4K) contain sequential frames of identical fish/camera angles. Using pHash clustering ($\text{pHash} \le 8$ bits Hamming distance), 270 near-duplicate frame clusters were identified across all fauna sources. Every cluster was constrained to land entirely within a single split (train, val, or test), ensuring **0 clusters span multiple splits** to prevent train-test data leakage.
+- **QA Protocol**: Quality control combined automated pHash similarity scanning with manual visual spot-checks across both Type A (mangrove match) and Type B (internal duplicate) flags, as well as across the full Hamming distance range (2–8 bits), confirming all automated flags were accurate and justified.
+
+---
+
+## 4. Annotation Formats
 
 The dataset maintains two complementary annotation formats corresponding to the two underlying data domain types:
 
@@ -47,7 +56,7 @@ The dataset maintains two complementary annotation formats corresponding to the 
 
 ---
 
-## 4. How to Load the Dataset in Python
+## 5. How to Load the Dataset in Python
 
 Below is a complete, runnable snippet demonstrating how to load images and their corresponding annotations for any split:
 
@@ -97,7 +106,7 @@ print(f"Found {len(img_annotations)} instance annotations for this image.")
 
 ---
 
-## 5. Turbidity Physics Model
+## 6. Turbidity Physics Model
 
 Synthetic turbid images were generated using the **Jaffe-McGlamery Underwater Image Formation Model**, which simulates physical underwater optical degradation according to Beer-Lambert's Law:
 
@@ -115,16 +124,16 @@ Where:
 
 ---
 
-## 6. Data Sources
+## 7. Data Sources
 
 1. **SUIM (Segmentation of Underwater Imagery)**: 150 clean fauna images and pixel-level masks.
-2. **DeepFish**: 200 clean marine fish images and pixel-level masks.
+2. **DeepFish**: 182 clean marine fish images and pixel-level masks (after quarantining 18 mislabeled mangrove dive frames).
 3. **Fish4Knowledge (F4K)**: 150 aquatic fauna images under varying underwater illumination.
 4. **Mangrove YouTube Footage**: 364 frames extracted from underwater mangrove dive videos, annotated for mangrove roots via Roboflow.
 
 ---
 
-## 7. Reproduction Steps
+## 8. Reproduction Steps
 
 To regenerate this dataset from raw source files:
 
@@ -132,11 +141,11 @@ To regenerate this dataset from raw source files:
    ```bash
    dvc pull
    ```
-2. **Extract Video Frames** (Optional - reference tool for raw video input):
+2. **Audit Fauna Contamination & Near-Duplicates**:
    ```bash
-   python labeling/extract_frames.py <input_video.mp4> <output_folder> --interval 5
+   python scripts/audit_fauna_contamination.py
    ```
-3. **Verify Labels**:
+3. **Verify Labels & Dataset Integrity**:
    ```bash
    python labeling/verify_labels.py
    ```

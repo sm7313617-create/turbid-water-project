@@ -234,9 +234,12 @@ def check_mangrove_labels():
 def check_packaged_dataset():
     """
     Checks the final packaged dataset/ directory structure, ensuring splits
-    are non-empty, .gitkeep files are removed, and all images have corresponding
-    annotations (fauna PNG masks or mangrove COCO JSON entries).
+    are non-empty, .gitkeep files are removed, all images have corresponding
+    annotations (fauna PNG masks or mangrove COCO JSON entries), and no two
+    different base stems share identical file hashes (MD5 content verification).
     """
+    import hashlib
+
     dataset_dir = PROJECT_ROOT / "dataset"
     if not dataset_dir.exists():
         return True, "Skipped (dataset/ folder does not exist yet)"
@@ -248,6 +251,11 @@ def check_packaged_dataset():
     splits = ["train", "val", "test"]
     issues = []
     total_packaged_images = 0
+    
+    # Track MD5 hash -> list of (split, image_filename, base_stem)
+    hash_map = {}
+    mask_hash_map = {}
+
 
     for split in splits:
         split_dir = dataset_dir / split
@@ -282,17 +290,49 @@ def check_packaged_dataset():
 
         for img_path in images:
             fname = img_path.name
+
+            # 1. Annotation existence check
             if "img_" in fname:  # Mangrove image
                 if fname not in coco_images:
                     issues.append(f"Mangrove image {fname} in dataset/{split} missing from COCO JSON")
+                base_stem = fname.split("_turb")[0]
             else:  # Fauna image (suim, deepfish, f4k)
                 base_stem = fname.split("_turb")[0]
                 expected_mask = f"{base_stem}_mask.png"
                 if expected_mask not in fauna_masks:
                     issues.append(f"Fauna image {fname} in dataset/{split} missing mask {expected_mask}")
 
+            # 2. Image Content MD5 Hash Uniqueness check
+            with open(img_path, "rb") as f:
+                img_hash = hashlib.md5(f.read()).hexdigest()
+
+            if img_hash in hash_map:
+                for prev_split, prev_fname, prev_stem in hash_map[img_hash]:
+                    if prev_stem != base_stem:
+                        issues.append(
+                            f"Duplicate image content detected! {split}/{fname} (stem: {base_stem}) "
+                            f"shares identical MD5 hash {img_hash} with {prev_split}/{prev_fname} (stem: {prev_stem})"
+                        )
+            hash_map.setdefault(img_hash, []).append((split, fname, base_stem))
+
+        # 3. Fauna Mask Content MD5 Hash Uniqueness check
+        for mask_file in ann_dir.glob("*.png"):
+            with open(mask_file, "rb") as f:
+                mask_hash = hashlib.md5(f.read()).hexdigest()
+            mask_stem = mask_file.stem.replace("_mask", "")
+            if mask_hash in mask_hash_map:
+                prev_split, prev_name, prev_stem = mask_hash_map[mask_hash]
+                if prev_stem != mask_stem:
+                    issues.append(
+                        f"Duplicate mask content detected! {split}/{mask_file.name} (stem: {mask_stem}) "
+                        f"shares identical MD5 hash {mask_hash} with {prev_split}/{prev_name} (stem: {prev_stem})"
+                    )
+            mask_hash_map[mask_hash] = (split, mask_file.name, mask_stem)
+
     passed = len(issues) == 0
     print(f"Total packaged synthetic images checked: {total_packaged_images}")
+    print(f"Unique image content hashes verified:   {len(hash_map)}")
+    print(f"Unique fauna mask hashes verified:      {len(mask_hash_map)}")
     print(f"Issues detected in dataset/ package:     {len(issues)}")
     if issues:
         print("\nPackaged Dataset Issues:")
@@ -303,6 +343,9 @@ def check_packaged_dataset():
 
     print(f"\nPACKAGED DATASET CHECK: {'PASSED' if passed else 'FAILED'}\n")
     return passed, total_packaged_images
+
+
+
 
 
 # ---------------------------------------------------------------------------

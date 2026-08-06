@@ -13,8 +13,9 @@ SPLITTING RULES:
 1. Base-Image Level Splitting: All 4 turbid variants (0.2, 0.4, 0.6, 0.8) of the
    same base image scene MUST be placed in the same split to prevent data leakage.
 2. Mangrove Split Reuse: Reuses pre-existing Roboflow COCO splits (train/valid/test).
-3. Fauna Split Stratification: Stratified 70/15/15 random split (seed=42) across
-   SUIM, DeepFish, and Fish4Knowledge fauna sub-sources.
+3. Cluster-Based Fauna Splitting: Groups near-duplicate fauna images (pHash distance <= 8)
+   into connected-component clusters, ensuring entire near-duplicate clusters remain in
+   a single split to avoid train-test leakage. Target ratio is ~70/15/15.
 
 DATASET OUTPUT STRUCTURE:
 dataset/
@@ -36,6 +37,8 @@ import random
 import shutil
 import sys
 from pathlib import Path
+from PIL import Image
+import imagehash
 from tqdm import tqdm
 
 # Ensure UTF-8 output encoding for Windows terminals
@@ -81,8 +84,7 @@ SPLITS = ["train", "val", "test"]
 
 def inspect_synthetic_filenames():
     """
-    Prints 5 example filenames from data/synthetic/ to verify the naming pattern
-    before executing the packaging logic.
+    Prints example filenames from data/synthetic/ to verify naming pattern.
     """
     print("=" * 70)
     print("INSPECTING SYNTHETIC FILENAMES (data/synthetic/)")
@@ -98,10 +100,9 @@ def inspect_synthetic_filenames():
 
 def prepare_dataset_directories():
     """
-    Creates/clears split directories (dataset/<split>/images and dataset/<split>/annotations)
-    and removes any existing .gitkeep placeholder files.
+    Clears old split directories and prepares a clean slate for dataset/ train/val/test.
     """
-    print("Preparing output dataset directory structure...")
+    print("Preparing output dataset directory structure (cleaning slate)...")
     DATASET_DIR.mkdir(parents=True, exist_ok=True)
 
     for split in SPLITS:
@@ -111,15 +112,13 @@ def prepare_dataset_directories():
         gitkeep = split_dir / ".gitkeep"
         if gitkeep.exists():
             gitkeep.unlink()
-            
+
+        # Wipe old split directory for clean slate
+        if split_dir.exists():
+            shutil.rmtree(split_dir)
+
         images_dir = split_dir / "images"
         annotations_dir = split_dir / "annotations"
-
-        # Idempotent cleanup: recreate empty folders
-        if images_dir.exists():
-            shutil.rmtree(images_dir)
-        if annotations_dir.exists():
-            shutil.rmtree(annotations_dir)
 
         images_dir.mkdir(parents=True, exist_ok=True)
         annotations_dir.mkdir(parents=True, exist_ok=True)
@@ -127,11 +126,7 @@ def prepare_dataset_directories():
 
 def get_mangrove_split_assignments():
     """
-    Reads the COCO JSON files for mangrove frames to partition base image stems
-    into train, val, and test splits.
-    
-    Returns: dict mapping split -> list of (base_stem, orig_coco_image_entry)
-             and dict mapping split -> source COCO data dictionary
+    Reads COCO JSON files for mangrove frames to partition base image stems.
     """
     mangrove_stems_by_split = {"train": [], "val": [], "test": []}
     coco_data_by_split = {}
@@ -149,12 +144,54 @@ def get_mangrove_split_assignments():
     return mangrove_stems_by_split, coco_data_by_split
 
 
-def get_fauna_split_assignments(seed=42):
+def build_fauna_clusters(raw_image_paths, distance_threshold=8):
     """
-    Collects all fauna base images from data/raw/, groups them by sub-source prefix
-    (deepfish, f4k, suim), and performs a stratified 70/15/15 random split.
-    
-    Returns: dict mapping split -> list of (base_stem, prefix)
+    Computes pHash for each raw image and groups near-duplicate images
+    (pHash Hamming distance <= threshold) into connected-component clusters.
+    """
+    hashes = {}
+    for p in raw_image_paths:
+        try:
+            with Image.open(p) as img:
+                hashes[p.stem] = (p, imagehash.phash(img))
+        except Exception as e:
+            print(f"Error computing hash for {p.name}: {e}")
+
+    stems = [p.stem for p in raw_image_paths if p.stem in hashes]
+    adj = {s: [] for s in stems}
+
+    for i in range(len(stems)):
+        for j in range(i + 1, len(stems)):
+            s1, s2 = stems[i], stems[j]
+            h1, h2 = hashes[s1][1], hashes[s2][1]
+            if h1 - h2 <= distance_threshold:
+                adj[s1].append(s2)
+                adj[s2].append(s1)
+
+    visited = set()
+    clusters = []
+
+    for s in stems:
+        if s not in visited:
+            component = []
+            queue = [s]
+            visited.add(s)
+            while queue:
+                curr = queue.pop(0)
+                component.append((curr, hashes[curr][0]))
+                for nbr in adj[curr]:
+                    if nbr not in visited:
+                        visited.add(nbr)
+                        queue.append(nbr)
+            clusters.append(component)
+
+    return clusters
+
+
+def get_fauna_cluster_split_assignments(seed=42):
+    """
+    Collects raw fauna images from data/raw/, clusters near-duplicates (pHash <= 8),
+    and assigns clusters to train, val, and test splits targeting ~70/15/15 ratio.
     """
     raw_images = sorted([
         f for f in RAW_DIR.iterdir()
@@ -165,31 +202,47 @@ def get_fauna_split_assignments(seed=42):
     for img_path in raw_images:
         stem = img_path.stem
         prefix = stem.split("_")[0].lower()
-        fauna_by_prefix.setdefault(prefix, []).append(stem)
+        fauna_by_prefix.setdefault(prefix, []).append(img_path)
 
     fauna_stems_by_split = {"train": [], "val": [], "test": []}
     rng = random.Random(seed)
 
-    print("Fauna Stratification Breakdown (70/15/15 split):")
-    for prefix, stems in sorted(fauna_by_prefix.items()):
-        shuffled = list(stems)
-        rng.shuffle(shuffled)
-        n = len(shuffled)
-        n_train = int(round(n * 0.70))
-        n_val = int(round(n * 0.15))
-        
-        train_stems = shuffled[:n_train]
-        val_stems = shuffled[n_train:n_train + n_val]
-        test_stems = shuffled[n_train + n_val:]
-        
-        print(f"  [{prefix:8s}] total: {n:3d} -> train: {len(train_stems):3d}, val: {len(val_stems):3d}, test: {len(test_stems):3d}")
-        
-        for s in train_stems:
-            fauna_stems_by_split["train"].append((s, prefix))
-        for s in val_stems:
-            fauna_stems_by_split["val"].append((s, prefix))
-        for s in test_stems:
-            fauna_stems_by_split["test"].append((s, prefix))
+    print("Fauna Cluster-Based Stratification Breakdown (~70/15/15 split):")
+
+    for prefix, image_paths in sorted(fauna_by_prefix.items()):
+        clusters = build_fauna_clusters(image_paths, distance_threshold=8)
+        shuffled_clusters = list(clusters)
+        rng.shuffle(shuffled_clusters)
+
+        total_imgs = len(image_paths)
+        target_train = total_imgs * 0.70
+        target_val = total_imgs * 0.15
+
+        curr_train, curr_val, curr_test = [], [], []
+        n_train, n_val = 0, 0
+
+        for c in shuffled_clusters:
+            c_len = len(c)
+            if n_train + c_len <= target_train or n_train == 0:
+                curr_train.extend(c)
+                n_train += c_len
+            elif n_val + c_len <= target_val or n_val == 0:
+                curr_val.extend(c)
+                n_val += c_len
+            else:
+                curr_test.extend(c)
+
+        print(f"  [{prefix:8s}] total: {total_imgs:3d} images ({len(clusters):3d} clusters) -> "
+              f"train: {len(curr_train):3d} ({len(curr_train)/total_imgs:.1%}), "
+              f"val: {len(curr_val):3d} ({len(curr_val)/total_imgs:.1%}), "
+              f"test: {len(curr_test):3d} ({len(curr_test)/total_imgs:.1%})")
+
+        for stem, raw_path in curr_train:
+            fauna_stems_by_split["train"].append((stem, prefix, raw_path))
+        for stem, raw_path in curr_val:
+            fauna_stems_by_split["val"].append((stem, prefix, raw_path))
+        for stem, raw_path in curr_test:
+            fauna_stems_by_split["test"].append((stem, prefix, raw_path))
 
     return fauna_stems_by_split
 
@@ -203,7 +256,7 @@ def package_dataset():
     prepare_dataset_directories()
 
     mangrove_splits, coco_data_by_split = get_mangrove_split_assignments()
-    fauna_splits = get_fauna_split_assignments(seed=42)
+    fauna_splits = get_fauna_cluster_split_assignments(seed=42)
 
     # Pre-index fauna mask files for fast lookup
     fauna_mask_lookup = {}
@@ -212,8 +265,6 @@ def package_dataset():
             for mask_file in mask_dir.glob("*.png"):
                 fauna_mask_lookup[mask_file.name] = mask_file
 
-    # Stats tracking structure
-    # stats[split][class_name][turb_level] = count
     stats = {
         split: {
             "mangrove_root": {turb: 0 for turb in TURBIDITY_LEVELS},
@@ -237,7 +288,6 @@ def package_dataset():
         new_coco_images = []
         new_coco_annotations = []
         
-        # Build lookup for original annotations by image_id
         ann_by_image_id = {}
         for ann in orig_coco.get("annotations", []):
             ann_by_image_id.setdefault(ann["image_id"], []).append(ann)
@@ -260,7 +310,6 @@ def package_dataset():
                 shutil.copy2(src_syn_path, dst_syn_path)
                 stats[split]["mangrove_root"][turb] += 1
 
-                # Add COCO image entry
                 new_img_id = img_id_counter
                 img_id_counter += 1
                 
@@ -269,7 +318,6 @@ def package_dataset():
                 new_img_entry["file_name"] = syn_filename
                 new_coco_images.append(new_img_entry)
 
-                # Duplicate annotations for this turbid image variant
                 for ann in ann_by_image_id.get(orig_img_id, []):
                     new_ann_entry = dict(ann)
                     new_ann_entry["id"] = ann_id_counter
@@ -277,7 +325,6 @@ def package_dataset():
                     new_ann_entry["image_id"] = new_img_id
                     new_coco_annotations.append(new_ann_entry)
 
-        # Write filtered/expanded COCO JSON for this split
         new_coco_data = {
             "info": orig_coco.get("info", {}),
             "licenses": orig_coco.get("licenses", []),
@@ -292,8 +339,11 @@ def package_dataset():
         # -------------------------------------------------------------------
         # 2. FAUNA PACKAGING
         # -------------------------------------------------------------------
-        for stem, prefix in tqdm(fauna_splits[split], desc=f"Fauna ({split})"):
-            # Copy matching fauna PNG mask
+        for stem, prefix, raw_path in tqdm(fauna_splits[split], desc=f"Fauna ({split})"):
+            if not raw_path.exists():
+                print(f"Error: raw source image missing for stem {stem} at {raw_path}")
+                continue
+
             expected_mask_name = f"{stem}_mask.png"
             if expected_mask_name in fauna_mask_lookup:
                 src_mask = fauna_mask_lookup[expected_mask_name]
@@ -303,7 +353,6 @@ def package_dataset():
             else:
                 print(f"Warning: missing mask for fauna stem {stem}")
 
-            # Copy turbid synthetic images
             for turb in TURBIDITY_LEVELS:
                 syn_filename = f"{stem}_turb{turb}.png"
                 src_syn_path = SYNTHETIC_DIR / syn_filename
@@ -321,7 +370,7 @@ def package_dataset():
 
 def print_summary_table(stats):
     """
-    Prints a clear, publication-ready Markdown table summarizing dataset counts.
+    Prints a clear Markdown table summarizing dataset counts.
     """
     print("\n" + "=" * 70)
     print("FINAL DATASET PACKAGING SUMMARY")

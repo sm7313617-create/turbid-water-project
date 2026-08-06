@@ -1,10 +1,8 @@
-cat > .gitignore << 'EOF'
 # Data (too large for Git — use DVC + Google Drive instead)
 data/*
 !data/*.dvc
-dataset/train/
-dataset/val/
-dataset/test/
+dataset/*
+!dataset/*.dvc
 
 # Python
 __pycache__/
@@ -20,4 +18,3 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
-/dataset
