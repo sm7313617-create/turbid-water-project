@@ -10,16 +10,16 @@
 
 <div align="center">
 
-[![Python](https://img.shields.io/badge/PYTHON-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![DVC](https://img.shields.io/badge/DVC-DATA_VERSIONED-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
-[![OpenCV](https://img.shields.io/badge/OPENCV-VISION_ENGINE-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
-[![Model](https://img.shields.io/badge/BEER--LAMBERT-OPTICAL_MODEL-0284C7?style=for-the-badge&logo=scipy&logoColor=white)](docs/turbidity_model.md)
+[![Python](https://img.shields.io/badge/PYTHON-3.12-E63946?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![DVC](https://img.shields.io/badge/DVC-DATA_VERSIONED-1E293B?style=for-the-badge&logo=dvc&logoColor=white)](https://dvc.org)
+[![OpenCV](https://img.shields.io/badge/OPENCV-VISION_ENGINE-E63946?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
+[![Model](https://img.shields.io/badge/BEER--LAMBERT-OPTICAL_MODEL-1E293B?style=for-the-badge&logo=scipy&logoColor=white)](docs/turbidity_model.md)
 
-[![Streamlit](https://img.shields.io/badge/STREAMLIT-INTERACTIVE_APP-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
-[![Images](https://img.shields.io/badge/IMAGES-3%2C384_SYNTHETIC-10B981?style=for-the-badge&logo=png&logoColor=white)](#dataset-statistics)
-[![Levels](https://img.shields.io/badge/TURBIDITY-4_LEVELS-F59E0B?style=for-the-badge&logo=hashnode&logoColor=white)](#degradation-samples)
-[![QA Pass](https://img.shields.io/badge/QA_AUDIT-100%25_PASSED-059669?style=for-the-badge&logo=githubactions&logoColor=white)](scripts/audit_fauna_contamination.py)
-[![License](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge&logo=open-access&logoColor=white)](LICENSE)
+[![Streamlit](https://img.shields.io/badge/STREAMLIT-INTERACTIVE_APP-E63946?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
+[![Images](https://img.shields.io/badge/IMAGES-3%2C384_SYNTHETIC-1E293B?style=for-the-badge&logo=png&logoColor=white)](#dataset-statistics)
+[![Levels](https://img.shields.io/badge/TURBIDITY-4_LEVELS-E63946?style=for-the-badge&logo=hashnode&logoColor=white)](#degradation-samples)
+[![QA Pass](https://img.shields.io/badge/QA_AUDIT-100%25_PASSED-1E293B?style=for-the-badge&logo=githubactions&logoColor=white)](scripts/audit_fauna_contamination.py)
+[![License](https://img.shields.io/badge/LICENSE-MIT-E63946?style=for-the-badge&logo=open-access&logoColor=white)](LICENSE)
 
 </div>
 
@@ -107,7 +107,7 @@
 ---
 
 <a id="overview"></a>
-<img src="assets/banners/overview.png" alt="01 | Overview" width="100%" />
+<img src="assets/banners/overview.png" alt="01 // Overview" width="100%" />
 
 <br/>
 
@@ -127,7 +127,7 @@ Underwater vision systems face severe performance degradation due to light absor
 ---
 
 <a id="target-classes--annotations"></a>
-<img src="assets/banners/classes.png" alt="02 | Target Classes &amp; Annotations" width="100%" />
+<img src="assets/banners/classes.png" alt="02 // Target Classes &amp; Annotations" width="100%" />
 
 <br/>
 
@@ -141,7 +141,7 @@ The dataset targets two aquatic computer vision categories, provided with corres
 ---
 
 <a id="tech-stack"></a>
-<img src="assets/banners/techstack.png" alt="03 | Tech Stack" width="100%" />
+<img src="assets/banners/techstack.png" alt="03 // Tech Stack" width="100%" />
 
 <br/>
 
@@ -157,7 +157,7 @@ The dataset targets two aquatic computer vision categories, provided with corres
 ---
 
 <a id="physics-model"></a>
-<img src="assets/banners/physics.png" alt="04 | Physics Model" width="100%" />
+<img src="assets/banners/physics.png" alt="04 // Physics Model" width="100%" />
 
 <br/>
 
@@ -187,7 +187,7 @@ Where:
 ---
 
 <a id="degradation-samples"></a>
-<img src="assets/banners/samples.png" alt="05 | Degradation Samples" width="100%" />
+<img src="assets/banners/samples.png" alt="05 // Degradation Samples" width="100%" />
 
 <br/>
 
@@ -208,7 +208,7 @@ Where:
 ---
 
 <a id="dataset-statistics"></a>
-<img src="assets/banners/stats.png" alt="06 | Dataset Statistics" width="100%" />
+<img src="assets/banners/stats.png" alt="06 // Dataset Statistics" width="100%" />
 
 <br/>
 
@@ -244,15 +244,15 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 ---
 
 <a id="project-structure"></a>
-<img src="assets/banners/structure.png" alt="07 | Project Structure" width="100%" />
+<img src="assets/banners/structure.png" alt="07 // Project Structure" width="100%" />
 
 <br/>
 
 ```text
 turbid-water-project/
-├── assets/                       <- Project visual assets & section header banners
-│   ├── hero_banner.png           <- High-resolution hero banner
-│   ├── banners/                  <- Section header banner images
+├── assets/                       <- Project visual assets, hero banner PNG & section banners
+│   ├── hero_banner.png           <- Japanese minimalist design hero banner
+│   ├── banners/                  <- Japanese aesthetic section header banners
 │   └── samples/                  <- Raw images, mask samples & degradation progressions
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
 │   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
@@ -293,7 +293,7 @@ turbid-water-project/
 ---
 
 <a id="installation"></a>
-<img src="assets/banners/installation.png" alt="08 | Installation" width="100%" />
+<img src="assets/banners/installation.png" alt="08 // Installation" width="100%" />
 
 <br/>
 
@@ -316,7 +316,7 @@ dvc pull
 ---
 
 <a id="usage-3-ways"></a>
-<img src="assets/banners/usage.png" alt="09 | Usage Guide" width="100%" />
+<img src="assets/banners/usage.png" alt="09 // Usage Guide" width="100%" />
 
 <br/>
 
@@ -329,7 +329,7 @@ dvc pull
 ---
 
 <a id="dataset-integrity"></a>
-<img src="assets/banners/integrity.png" alt="10 | Dataset Integrity" width="100%" />
+<img src="assets/banners/integrity.png" alt="10 // Dataset Integrity" width="100%" />
 
 <br/>
 
@@ -344,7 +344,7 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ---
 
 <a id="data-quality-notes"></a>
-<img src="assets/banners/quality.png" alt="11 | Data Quality Notes" width="100%" />
+<img src="assets/banners/quality.png" alt="11 // Data Quality Notes" width="100%" />
 
 <br/>
 
@@ -355,7 +355,7 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ---
 
 <a id="data-sources"></a>
-<img src="assets/banners/sources.png" alt="12 | Data Sources" width="100%" />
+<img src="assets/banners/sources.png" alt="12 // Data Sources" width="100%" />
 
 <br/>
 
@@ -367,7 +367,7 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ---
 
 <a id="license"></a>
-<img src="assets/banners/license.png" alt="13 | License" width="100%" />
+<img src="assets/banners/license.png" alt="13 // License" width="100%" />
 
 <br/>
 
