@@ -82,17 +82,17 @@
 <a href="#overview"><img src="https://img.shields.io/badge/01-OVERVIEW-101b33?style=for-the-badge&labelColor=e63946" alt="01 Overview"/></a>
 <a href="#target-classes--annotations"><img src="https://img.shields.io/badge/02-TARGET_CLASSES-101b33?style=for-the-badge&labelColor=e63946" alt="02 Target Classes"/></a>
 <a href="#tech-stack"><img src="https://img.shields.io/badge/03-TECH_STACK-101b33?style=for-the-badge&labelColor=e63946" alt="03 Tech Stack"/></a>
-<a href="#physics-model"><img src="https://img.shields.io/badge/04-PHYSICS_MODEL-101b33?style=for-the-badge&labelColor=e63946" alt="04 Physics Model"/></a>
+<a href="#pipeline-breakdown"><img src="https://img.shields.io/badge/04-PIPELINE_BREAKDOWN-101b33?style=for-the-badge&labelColor=e63946" alt="04 Pipeline Breakdown"/></a>
 
-<a href="#degradation-samples"><img src="https://img.shields.io/badge/05-DEGRADATION_SAMPLES-101b33?style=for-the-badge&labelColor=e63946" alt="05 Degradation Samples"/></a>
-<a href="#dataset-statistics"><img src="https://img.shields.io/badge/06-DATASET_STATS-101b33?style=for-the-badge&labelColor=e63946" alt="06 Dataset Stats"/></a>
-<a href="#project-structure"><img src="https://img.shields.io/badge/07-PROJECT_STRUCTURE-101b33?style=for-the-badge&labelColor=e63946" alt="07 Structure"/></a>
-<a href="#installation"><img src="https://img.shields.io/badge/08-INSTALLATION-101b33?style=for-the-badge&labelColor=e63946" alt="08 Installation"/></a>
+<a href="#physics-model"><img src="https://img.shields.io/badge/05-PHYSICS_MODEL-101b33?style=for-the-badge&labelColor=e63946" alt="05 Physics Model"/></a>
+<a href="#degradation-samples"><img src="https://img.shields.io/badge/06-DEGRADATION_SAMPLES-101b33?style=for-the-badge&labelColor=e63946" alt="06 Degradation Samples"/></a>
+<a href="#dataset-statistics"><img src="https://img.shields.io/badge/07-DATASET_STATS-101b33?style=for-the-badge&labelColor=e63946" alt="07 Dataset Stats"/></a>
+<a href="#project-structure"><img src="https://img.shields.io/badge/08-STRUCTURE-101b33?style=for-the-badge&labelColor=e63946" alt="08 Structure"/></a>
 
-<a href="#usage-3-ways"><img src="https://img.shields.io/badge/09-USAGE_GUIDE-101b33?style=for-the-badge&labelColor=e63946" alt="09 Usage Guide"/></a>
-<a href="#dataset-integrity"><img src="https://img.shields.io/badge/10-DATA_INTEGRITY-101b33?style=for-the-badge&labelColor=e63946" alt="10 Integrity"/></a>
-<a href="#data-quality-notes"><img src="https://img.shields.io/badge/11-DATA_QUALITY-101b33?style=for-the-badge&labelColor=e63946" alt="11 Data Quality"/></a>
-<a href="#data-sources"><img src="https://img.shields.io/badge/12-DATA_SOURCES-101b33?style=for-the-badge&labelColor=e63946" alt="12 Sources"/></a>
+<a href="#installation"><img src="https://img.shields.io/badge/09-INSTALLATION-101b33?style=for-the-badge&labelColor=e63946" alt="09 Installation"/></a>
+<a href="#usage-3-ways"><img src="https://img.shields.io/badge/10-USAGE_GUIDE-101b33?style=for-the-badge&labelColor=e63946" alt="10 Usage Guide"/></a>
+<a href="#dataset-integrity"><img src="https://img.shields.io/badge/11-DATA_INTEGRITY-101b33?style=for-the-badge&labelColor=e63946" alt="11 Data Integrity"/></a>
+<a href="#data-quality-notes"><img src="https://img.shields.io/badge/12-DATA_QUALITY-101b33?style=for-the-badge&labelColor=e63946" alt="12 Data Quality"/></a>
 
 </div>
 
@@ -148,8 +148,55 @@ The dataset targets two aquatic computer vision categories, provided with corres
 
 ---
 
+<a id="pipeline-breakdown"></a>
+<img src="assets/banners/pipeline.png" alt="04 // Simulation Pipeline Breakdown" width="100%" />
+
+<br/>
+
+The synthetic generator decouples batch orchestration (`generate.py`) from physical optical execution (`degradation.py`).
+
+### End-to-End Execution Flowchart
+
+```mermaid
+graph TD
+    subgraph Ingestion ["1. Batch Processor (generator/generate.py)"]
+        A["Raw Source Images<br/>(data/raw & data/mangrove_frames)"] --> B["Stem Extraction & Deduplication"]
+        B --> C["Turbidity Level Selector<br/>(0.2, 0.4, 0.6, 0.8)"]
+    end
+
+    subgraph Physics Engine ["2. Optical Physics Simulator (generator/degradation.py)"]
+        C --> D["Depth Map Generator d(x)<br/>(Linear Gradient / Radial)"]
+        D --> E["Beer-Lambert Transmission Map t_c(x)<br/>(Wavelength Attenuation: R=3.0, G=1.8, B=1.0)"]
+        E --> F["Ambient Backscatter Vector A<br/>(Depth-Weighted Blue-Green Veil)"]
+        F --> G["Jaffe-McGlamery Image Blending<br/>I(x) = J(x) * t(x) + A * (1 - t(x))"]
+        G --> H["Forward Scattering Blur<br/>(Gaussian Contrast Reduction)"]
+        H --> I["Particulate Noise Overlay<br/>(Marine Snow Sediment)"]
+    end
+
+    subgraph Registry ["3. Output & Manifest Registry (generator/generate.py)"]
+        I --> J["Traceable Naming<br/>{stem}_turb{level}.png"]
+        J --> K["Save to data/synthetic/"]
+        K --> L["Register Entry in synthetic_manifest.csv"]
+    end
+
+    style Ingestion fill:#101B33,stroke:#E63946,stroke-width:2px,color:#FFFFFF
+    style Physics Engine fill:#0D1627,stroke:#38BDF8,stroke-width:2px,color:#FFFFFF
+    style Registry fill:#101B33,stroke:#E63946,stroke-width:2px,color:#FFFFFF
+```
+
+### Module Component Breakdown
+
+| Module File | Component Function | Input Parameters | Output & Purpose |
+|:---|:---|:---|:---|
+| **`generator/degradation.py`** | `degrade_image()` | Clean RGB Image ($J$), $\text{turbidity} \in [0, 1]$, `--depth-mode` | Orchestrates 6-stage physical optics pipeline and returns degraded RGB image array |
+| **`generator/degradation.py`** | `get_per_channel_transmission()` | Depth map $d(x)$, $\text{turbidity}$, $\beta_{r,g,b}$ coefficients | Computes 3-channel Beer-Lambert transmission map $t(x) = \exp(-\beta \cdot \tau \cdot d(x))$ |
+| **`generator/generate.py`** | `batch_generate()` | Source dirs (`data/raw`, `data/mangrove_frames`), turbidity levels | Scans clean image directories, executes batch degradation, saves outputs, and writes `synthetic_manifest.csv` |
+| **`generator/utils.py`** | Helper Optical Functions | Image array $I$, turbidity level $\tau$, depth map $d(x)$ | Generates normalized depth maps, ambient light vectors, forward scatter blur, and marine snow noise |
+
+---
+
 <a id="physics-model"></a>
-<img src="assets/banners/physics.png" alt="04 // Physics Model" width="100%" />
+<img src="assets/banners/physics.png" alt="05 // Physics Model" width="100%" />
 
 <br/>
 
@@ -179,7 +226,7 @@ Where:
 ---
 
 <a id="degradation-samples"></a>
-<img src="assets/banners/samples.png" alt="05 // Degradation Samples" width="100%" />
+<img src="assets/banners/samples.png" alt="06 // Degradation Samples" width="100%" />
 
 <br/>
 
@@ -200,7 +247,7 @@ Where:
 ---
 
 <a id="dataset-statistics"></a>
-<img src="assets/banners/stats.png" alt="06 // Dataset Statistics" width="100%" />
+<img src="assets/banners/stats.png" alt="07 // Dataset Statistics" width="100%" />
 
 <br/>
 
@@ -236,7 +283,7 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 ---
 
 <a id="project-structure"></a>
-<img src="assets/banners/structure.png" alt="07 // Project Structure" width="100%" />
+<img src="assets/banners/structure.png" alt="08 // Project Structure" width="100%" />
 
 <br/>
 
@@ -285,7 +332,7 @@ turbid-water-project/
 ---
 
 <a id="installation"></a>
-<img src="assets/banners/installation.png" alt="08 // Installation" width="100%" />
+<img src="assets/banners/installation.png" alt="09 // Installation" width="100%" />
 
 <br/>
 
@@ -308,7 +355,7 @@ dvc pull
 ---
 
 <a id="usage-3-ways"></a>
-<img src="assets/banners/usage.png" alt="09 // Usage Guide" width="100%" />
+<img src="assets/banners/usage.png" alt="10 // Usage Guide" width="100%" />
 
 <br/>
 
@@ -321,7 +368,7 @@ dvc pull
 ---
 
 <a id="dataset-integrity"></a>
-<img src="assets/banners/integrity.png" alt="10 // Dataset Integrity" width="100%" />
+<img src="assets/banners/integrity.png" alt="11 // Dataset Integrity" width="100%" />
 
 <br/>
 
@@ -336,7 +383,7 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ---
 
 <a id="data-quality-notes"></a>
-<img src="assets/banners/quality.png" alt="11 // Data Quality Notes" width="100%" />
+<img src="assets/banners/quality.png" alt="12 // Data Quality Notes" width="100%" />
 
 <br/>
 
@@ -347,7 +394,7 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ---
 
 <a id="data-sources"></a>
-<img src="assets/banners/sources.png" alt="12 // Data Sources" width="100%" />
+<img src="assets/banners/sources.png" alt="13 // Data Sources" width="100%" />
 
 <br/>
 
@@ -359,7 +406,7 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ---
 
 <a id="license"></a>
-<img src="assets/banners/license.png" alt="13 // License" width="100%" />
+<img src="assets/banners/license.png" alt="14 // License" width="100%" />
 
 <br/>
 
