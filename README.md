@@ -14,17 +14,17 @@
 
 <br/>
 
-<table>
-  <tr>
-    <td align="center"><a href="#overview"><b>Overview</b></a></td>
-    <td align="center"><a href="#tech-stack"><b>Tech Stack</b></a></td>
-    <td align="center"><a href="#physics-model"><b>Physics Model</b></a></td>
-    <td align="center"><a href="#dataset-statistics"><b>Dataset Stats</b></a></td>
-    <td align="center"><a href="#installation"><b>Installation</b></a></td>
-    <td align="center"><a href="#usage-3-ways"><b>Usage</b></a></td>
-    <td align="center"><a href="#data-quality-notes"><b>Data Quality</b></a></td>
-  </tr>
-</table>
+<div align="center">
+
+<a href="#overview"><img src="https://img.shields.io/badge/Overview-1E293B?style=flat-square&logoColor=38BDF8" alt="Overview"/></a>
+<a href="#tech-stack"><img src="https://img.shields.io/badge/Tech_Stack-1E293B?style=flat-square&logoColor=38BDF8" alt="Tech Stack"/></a>
+<a href="#physics-model"><img src="https://img.shields.io/badge/Physics_Model-1E293B?style=flat-square&logoColor=38BDF8" alt="Physics Model"/></a>
+<a href="#dataset-statistics"><img src="https://img.shields.io/badge/Dataset_Stats-1E293B?style=flat-square&logoColor=38BDF8" alt="Dataset Stats"/></a>
+<a href="#installation"><img src="https://img.shields.io/badge/Installation-1E293B?style=flat-square&logoColor=38BDF8" alt="Installation"/></a>
+<a href="#usage-3-ways"><img src="https://img.shields.io/badge/Usage_Guide-1E293B?style=flat-square&logoColor=38BDF8" alt="Usage"/></a>
+<a href="#data-quality-notes"><img src="https://img.shields.io/badge/Data_Quality-1E293B?style=flat-square&logoColor=38BDF8" alt="Data Quality"/></a>
+
+</div>
 
 ---
 
@@ -32,37 +32,14 @@
 
 ## Tech Stack
 
-<div align="center">
-
-### Core Computation & Math
-[![Python](https://img.shields.io/badge/Python_3.12-1E293B?style=for-the-badge&logo=python&logoColor=38BDF8)](https://python.org)
-[![NumPy](https://img.shields.io/badge/NumPy_Array_Ops-0F172A?style=for-the-badge&logo=numpy&logoColor=38BDF8)](https://numpy.org)
-[![SciPy](https://img.shields.io/badge/SciPy_Math-1E293B?style=for-the-badge&logo=scipy&logoColor=38BDF8)](https://scipy.org)
-[![Pandas](https://img.shields.io/badge/Pandas_DataFrames-0F172A?style=for-the-badge&logo=pandas&logoColor=38BDF8)](https://pandas.pydata.org)
-
-### Vision & Degradation Engine
-[![OpenCV](https://img.shields.io/badge/OpenCV_Image_Processing-1E293B?style=for-the-badge&logo=opencv&logoColor=38BDF8)](https://opencv.org)
-[![Pillow](https://img.shields.io/badge/Pillow_PIL-0F172A?style=for-the-badge&logo=python&logoColor=38BDF8)](https://python-pillow.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit_Interactive_App-1E293B?style=for-the-badge&logo=streamlit&logoColor=38BDF8)](generator/app.py)
-
-### Data Engineering & Storage
-[![DVC](https://img.shields.io/badge/DVC_Data_Versioning-0F172A?style=for-the-badge&logo=dvc&logoColor=38BDF8)](https://dvc.org)
-[![Google Drive](https://img.shields.io/badge/Google_Drive_Remote-1E293B?style=for-the-badge&logo=googledrive&logoColor=38BDF8)](https://drive.google.com)
-[![ImageHash](https://img.shields.io/badge/ImageHash_pHash_QA-0F172A?style=for-the-badge&logo=hashnode&logoColor=38BDF8)](scripts/audit_fauna_contamination.py)
-[![COCO Format](https://img.shields.io/badge/COCO_1.0_JSON-1E293B?style=for-the-badge&logo=json&logoColor=38BDF8)](dataset/dataset_card.md)
-
-</div>
-
-<br/>
-
-| Category | Technologies & Tools | Function & Purpose |
+| Domain | Technologies & Badges | Core Function & Implementation |
 |:---|:---|:---|
-| **Scientific Computing** | `Python 3.12` &bull; `NumPy` &bull; `SciPy` &bull; `Pandas` | High-performance array manipulation & physical optical matrix calculations |
-| **Computer Vision** | `OpenCV (cv2)` &bull; `Pillow (PIL)` | Spatial image transformations, depth map generation & spatial filtering |
-| **Interactive UI** | `Streamlit` | Web-based interactive simulator for real-time optical parameter tuning |
-| **Data Engineering** | `DVC` &bull; `Google Drive Remote` | Remote data sync, large file tracking & dataset versioning |
-| **Quality Control** | `ImageHash (pHash)` &bull; `tqdm` | Perceptual hash contamination auditing & cluster-aware split verification |
-| **Annotations** | `COCO 1.0 Specification` &bull; `PNG Instance Masks` | Polygon segmentations & pixel-level segmentation masks |
+| **Scientific Computing** | [![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org) [![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)](https://numpy.org) [![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?style=flat-square&logo=scipy&logoColor=white)](https://scipy.org) [![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org) | Vectorized RGB matrix attenuation, depth array operations, and dataset metadata management |
+| **Computer Vision Engine** | [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white)](https://opencv.org) [![Pillow](https://img.shields.io/badge/Pillow-013243?style=flat-square&logo=python&logoColor=white)](https://python-pillow.org) | Transmission map filtering, spatial Gaussian contrast reduction, and marine snow synthesis |
+| **Interactive UI** | [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](generator/app.py) | Real-time turbidity parameter control, RGB spectral diagnostics, and side-by-side visual comparison |
+| **Data Versioning** | [![DVC](https://img.shields.io/badge/DVC-9CF0E1?style=flat-square&logo=dvc&logoColor=black)](https://dvc.org) [![Google Drive](https://img.shields.io/badge/Google_Drive-4285F4?style=flat-square&logo=googledrive&logoColor=white)](https://drive.google.com) | Remote dataset tracking and synchronization without bloating Git version history |
+| **Quality Control** | [![ImageHash](https://img.shields.io/badge/ImageHash_pHash-10B981?style=flat-square&logo=hashnode&logoColor=white)](scripts/audit_fauna_contamination.py) [![tqdm](https://img.shields.io/badge/tqdm-FFC107?style=flat-square&logo=python&logoColor=black)](scripts/package_dataset.py) | Perceptual hash contamination auditing ($\text{pHash} \le 8$ bits) & cluster-aware split partitioning |
+| **Annotation Standards** | [![COCO 1.0](https://img.shields.io/badge/COCO_1.0_JSON-00599C?style=flat-square&logo=json&logoColor=white)](dataset/dataset_card.md) [![PNG Masks](https://img.shields.io/badge/PNG_Masks-22C55E?style=flat-square&logo=png&logoColor=white)](dataset/dataset_card.md) | Polygon instance segmentations for mangroves and binary pixel-level segmentation masks for fauna |
 
 ---
 
@@ -73,7 +50,7 @@ Underwater vision systems face severe performance degradation due to light absor
 > **Project Scope**: Developed for Internship Task 1 of 2.
 
 <details>
-<summary><b>Click to view Core Deliverables</b></summary>
+<summary><b>Click to expand Core Deliverables</b></summary>
 
 * **Degradation Generator**: A physically-grounded optical engine with adjustable turbidity parameters ($0.0$ to $1.0$).
 * **Synthetic Labeled Dataset**: 3,384 packaged synthetic images across 4 turbidity levels ($0.2, 0.4, 0.6, 0.8$) and 2 classes (`mangrove_root` and `aquatic_fauna`).
@@ -97,16 +74,14 @@ Where:
 * $\text{turbidity}$ is a float parameter ranging from $0.0$ (crystal clear) to $1.0$ (maximum turbid).
 
 <details>
-<summary><b>Click to view Four Optical Effects</b></summary>
+<summary><b>Click to expand Four Optical Degradation Layers</b></summary>
 
-```text
-+-----------------------------------------------------------------------------------+
-| 1. Wavelength Color Attenuation  --> Selective red light decay (Beer-Lambert Law) |
-| 2. Backscatter Haze              --> Additive ambient veil tint (depth-dependent) |
-| 3. Forward Scattering Blur       --> Gaussian spatial contrast reduction          |
-| 4. Particulate Marine Snow       --> High-frequency suspended sediment noise      |
-+-----------------------------------------------------------------------------------+
-```
+| Effect Layer | Physical Mechanism | Implementation Detail |
+|:---|:---|:---|
+| **1. Color Attenuation** | Selective red-spectrum absorption | Beer-Lambert exponential decay ($\beta_r = 3.0, \beta_g = 1.8, \beta_b = 1.0$) |
+| **2. Backscatter Haze** | Ambient veil accumulation | Depth-weighted additive tinting ($A \cdot (1 - t(x))$) |
+| **3. Scattering Blur** | Forward light scattering contrast drop | Dynamic Gaussian spatial kernel ($k = 2 \cdot \lfloor 4\tau \rfloor + 1$) |
+| **4. Marine Snow Noise** | Suspended particulate scattering | High-frequency salt-and-pepper noise overlay |
 
 </details>
 
@@ -114,23 +89,30 @@ Where:
 
 ## Dataset Statistics
 
-The packaged dataset contains **3,384 synthetic images** derived from **846 unique base scenes** (482 fauna + 364 mangrove roots) $\times 4$ turbidity levels ($0.2, 0.4, 0.6, 0.8$).
+The packaged benchmark dataset contains **3,384 synthetic images** generated from **846 unique base scenes** (482 fauna + 364 mangrove roots) across 4 controlled turbidity levels ($0.2, 0.4, 0.6, 0.8$).
 
-| Split | Class | `turb0.2` | `turb0.4` | `turb0.6` | `turb0.8` | Split Total | Base Scenes |
-|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **`train`** | `mangrove_root` | 255 | 255 | 255 | 255 | 1,020 | 255 |
-| **`train`** | `aquatic_fauna` | 337 | 337 | 337 | 337 | 1,348 | 337 |
-| **`train` Subtotal** | | **592** | **592** | **592** | **592** | **2,368 (70%)** | **592** |
-| | | | | | | | |
-| **`val`** | `mangrove_root` | 54 | 54 | 54 | 54 | 216 | 54 |
-| **`val`** | `aquatic_fauna` | 71 | 71 | 71 | 71 | 284 | 71 |
-| **`val` Subtotal** | | **125** | **125** | **125** | **125** | **500 (15%)** | **125** |
-| | | | | | | | |
-| **`test`** | `mangrove_root` | 55 | 55 | 55 | 55 | 220 | 55 |
-| **`test`** | `aquatic_fauna` | 74 | 74 | 74 | 74 | 296 | 74 |
-| **`test` Subtotal** | | **129** | **129** | **129** | **129** | **516 (15%)** | **129** |
-| | | | | | | | |
-| **GRAND TOTAL** | **ALL CLASSES** | **846** | **846** | **846** | **846** | **3,384** | **846** |
+<details open>
+<summary><b>Interactive Dataset Breakdown Table</b></summary>
+
+<br/>
+
+| Dataset Split | Target Class | `turb0.2` | `turb0.4` | `turb0.6` | `turb0.8` | Images / Split | Base Scenes | Distribution |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **`train`** | `mangrove_root` | 255 | 255 | 255 | 255 | 1,020 | 255 | 30.1% |
+| **`train`** | `aquatic_fauna` | 337 | 337 | 337 | 337 | 1,348 | 337 | 39.9% |
+| **`train` Subtotal** | **All Classes** | **592** | **592** | **592** | **592** | **2,368** | **592** | **70.0%** |
+| | | | | | | | | |
+| **`val`** | `mangrove_root` | 54 | 54 | 54 | 54 | 216 | 54 | 6.4% |
+| **`val`** | `aquatic_fauna` | 71 | 71 | 71 | 71 | 284 | 71 | 8.4% |
+| **`val` Subtotal** | **All Classes** | **125** | **125** | **125** | **125** | **500** | **125** | **14.8%** |
+| | | | | | | | | |
+| **`test`** | `mangrove_root` | 55 | 55 | 55 | 55 | 220 | 55 | 6.5% |
+| **`test`** | `aquatic_fauna` | 74 | 74 | 74 | 74 | 296 | 74 | 8.7% |
+| **`test` Subtotal** | **All Classes** | **129** | **129** | **129** | **129** | **516** | **129** | **15.2%** |
+| | | | | | | | | |
+| **BENCHMARK TOTAL** | **`mangrove` + `fauna`** | **846** | **846** | **846** | **846** | **3,384** | **846** | **100.0%** |
+
+</details>
 
 ### Annotation Formats
 * **PNG Segmentation Masks**: Used for `aquatic_fauna` base images (pixel-level mask PNGs).
@@ -202,23 +184,11 @@ dvc pull
 
 ## Usage (3 Ways)
 
-### 1. CLI Single Image Generation
-Generate a synthetic turbid image with a specific turbidity value:
-```bash
-python generator/generate.py --input data/raw --output data/synthetic --turbidity 0.5
-```
-
-### 2. Bulk Generation (All Turbidity Levels)
-Generate all 4 turbidity levels ($0.2, 0.4, 0.6, 0.8$) across an entire directory of clean images:
-```bash
-python generator/generate.py --input data/raw --output data/synthetic --all-levels
-```
-
-### 3. Interactive Streamlit UI
-Launch the real-time interactive simulator web app with custom sliders and optical diagnostic charts:
-```bash
-streamlit run generator/app.py
-```
+| Execution Mode | Primary Purpose | Command |
+|:---|:---|:---|
+| **1. CLI Single Image** | Quick test on a single image with custom turbidity value | `python generator/generate.py --input data/raw --output data/synthetic --turbidity 0.5` |
+| **2. Bulk Directory** | Generate all 4 turbidity levels ($0.2, 0.4, 0.6, 0.8$) in bulk | `python generator/generate.py --input data/raw --output data/synthetic --all-levels` |
+| **3. Streamlit Web App** | Interactive parameter exploration, real-time preview & metrics | `streamlit run generator/app.py` |
 
 ---
 
