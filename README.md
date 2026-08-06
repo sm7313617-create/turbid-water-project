@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌊 Turbid Water Dataset & Optical Degradation Generator
+# Turbid Water Dataset & Optical Degradation Generator
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Streamlit UI](https://img.shields.io/badge/Streamlit-Interactive_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
@@ -12,30 +12,30 @@
   <b>A physically-grounded underwater optical degradation simulator and benchmark dataset for computer vision under severe aquatic turbidity.</b>
 </p>
 
-[Key Features](#-key-features) •
-[Interactive Web App](#-interactive-simulator-app) •
-[Physics Model](#-optical-physics-model) •
-[Dataset Benchmark](#-dataset-composition--benchmark) •
-[Quickstart](#-quick-start) •
-[Quality Assurance](#-quality-assurance--leakage-prevention)
+[Key Features](#key-features) •
+[Interactive Web App](#interactive-simulator-app) •
+[Physics Model](#optical-physics-model) •
+[Dataset Benchmark](#dataset-composition--benchmark) •
+[Quickstart](#quick-start) •
+[Quality Assurance](#quality-assurance--leakage-prevention)
 
 ---
 
 </div>
 
-## 📌 Executive Summary
+## Executive Summary
 
 Computer vision models deployed in underwater environments (such as autonomous underwater vehicles, marine ecology monitoring, and mangrove root inspection) suffer severe performance degradation due to **light attenuation, backscatter, and visibility loss**.
 
 The **Turbid Water Project** provides an end-to-end framework:
-1. 🧮 **Physically Grounded Degradation Engine**: Simulates realistic underwater optical degradation using the **Jaffe-McGlamery Optical Formation Model** and **Beer-Lambert's Law**.
-2. 🎛️ **Interactive Streamlit Web Simulator**: A classy, professional Web UI for real-time parameter tuning, visual comparison, and spectral transmission diagnostics.
-3. 📦 **3,384 Synthetic Turbid Benchmark Dataset**: 846 base scenes (482 aquatic fauna + 364 mangrove roots) synthetically degraded across 4 controlled turbidity levels ($\text{turbidity} \in \{0.2, 0.4, 0.6, 0.8\}$).
-4. 🛡️ **Perceptual Hash QA & Cluster-Aware Splitting**: Automated pHash contamination audit ($\text{pHash} \le 8$ bits) preventing train-test data leakage across sequential video frames.
+1. **Physically Grounded Degradation Engine**: Simulates realistic underwater optical degradation using the **Jaffe-McGlamery Optical Formation Model** and **Beer-Lambert's Law**.
+2. **Interactive Streamlit Web Simulator**: A clean, professional Web UI for real-time parameter tuning, visual comparison, and spectral transmission diagnostics.
+3. **3,384 Synthetic Turbid Benchmark Dataset**: 846 base scenes (482 aquatic fauna + 364 mangrove roots) synthetically degraded across 4 controlled turbidity levels ($\text{turbidity} \in \{0.2, 0.4, 0.6, 0.8\}$).
+4. **Perceptual Hash QA & Cluster-Aware Splitting**: Automated pHash contamination audit ($\text{pHash} \le 8$ bits) preventing train-test data leakage across sequential video frames.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 * **Physically Accurately Wavelength Attenuation**: Simulates exponential light decay where red wavelengths ($\lambda \approx 700\text{ nm}$) attenuate rapidly ($\beta_r = 3.0 \cdot \tau$), green attenuates moderately ($\beta_g = 1.8 \cdot \tau$), and blue penetrates deepest ($\beta_b = 1.0 \cdot \tau$).
 * **Ambient Backscatter & Marine Snow**: Generates depth-dependent ambient veil tint and forward-scattering particle noise.
@@ -45,9 +45,9 @@ The **Turbid Water Project** provides an end-to-end framework:
 
 ---
 
-## 🎛️ Interactive Simulator App
+## Interactive Simulator App
 
-The repository includes a modern, high-performance web interface built with **Streamlit** for visual parameter exploration:
+The repository includes a web interface built with **Streamlit** for visual parameter exploration:
 
 ```bash
 # Launch the interactive web simulator
@@ -55,14 +55,14 @@ streamlit run generator/app.py
 ```
 
 ### App Highlights
-* 🎚️ **Custom Gradient Turbidity Slider**: Adjust turbidity $\tau \in [0.0, 1.0]$ in real-time.
-* 🗺️ **Depth Map Profiles**: Toggle between **linear vertical gradient** (perspective depth) and **radial distance** (center subject focus).
-* 📊 **Spectral Attenuation Metrics**: Live RGB transmission range metrics and channel degradation bar charts.
-* 📁 **Dataset Explorer & Uploads**: Select clean fauna/mangrove scenes directly from raw data or upload custom images.
+* **Custom Gradient Turbidity Slider**: Adjust turbidity $\tau \in [0.0, 1.0]$ in real-time.
+* **Depth Map Profiles**: Toggle between **linear vertical gradient** (perspective depth) and **radial distance** (center subject focus).
+* **Spectral Attenuation Metrics**: Live RGB transmission range metrics and channel degradation bar charts.
+* **Dataset Explorer & Uploads**: Select clean fauna/mangrove scenes directly from raw data or upload custom images.
 
 ---
 
-## 🔬 Optical Physics Model
+## Optical Physics Model
 
 The degradation engine implements the classic **Jaffe-McGlamery Underwater Image Formation Model**:
 
@@ -78,7 +78,7 @@ Where:
 
 ---
 
-## 📊 Dataset Composition & Benchmark
+## Dataset Composition & Benchmark
 
 The dataset is partitioned into `train`, `val`, and `test` splits. All 4 turbid variants of any base scene—along with connected near-duplicate frame clusters—are kept strictly within the same split.
 
@@ -100,7 +100,7 @@ The dataset is partitioned into `train`, `val`, and `test` splits. All 4 turbid 
 
 ---
 
-## 🛡️ Quality Assurance & Leakage Prevention
+## Quality Assurance & Leakage Prevention
 
 <details>
 <summary><b>Click to expand Quality Control Details</b></summary>
@@ -115,7 +115,7 @@ To eliminate train-test data leakage caused by sequential video frame redundancy
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ### 1. Clone & Setup Virtual Environment
 ```bash
@@ -152,7 +152,7 @@ python scripts/package_dataset.py
 
 ---
 
-## 📂 Repository Architecture
+## Repository Architecture
 
 ```text
 turbid-water-project/
@@ -185,7 +185,7 @@ turbid-water-project/
 
 ---
 
-## 📜 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for details.
 
