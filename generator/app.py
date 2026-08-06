@@ -269,11 +269,14 @@ def main():
         unsafe_allow_html=True,
     )
 
-    depth_mode = st.sidebar.selectbox(
-        "Depth Map Mode",
-        options=["gradient", "radial"],
-        index=0,
-        help="'gradient': Linear top-to-bottom depth profile. 'radial': Center-to-edge distance profile.",
+    depth_mode = (
+        st.sidebar.selectbox(
+            "Depth Map Mode",
+            options=["gradient", "radial"],
+            index=0,
+            help="'gradient': Linear top-to-bottom depth profile. 'radial': Center-to-edge distance profile.",
+        )
+        or "gradient"
     )
 
     # 3. Advanced Physical Coefficients
@@ -301,11 +304,11 @@ def main():
             with st.spinner("Simulating optical degradation..."):
                 degraded_float = degrade_image(
                     raw_image,
-                    turbidity_level=float(turbidity_level),
-                    depth_mode=str(depth_mode),
-                    beta_max_r=float(beta_max_r),
-                    beta_max_g=float(beta_max_g),
-                    beta_max_b=float(beta_max_b),
+                    turbidity_level=turbidity_level,
+                    depth_mode=depth_mode,
+                    beta_max_r=beta_max_r,
+                    beta_max_g=beta_max_g,
+                    beta_max_b=beta_max_b,
                 )
                 degraded_uint8 = to_uint8(degraded_float)
 
@@ -321,16 +324,16 @@ def main():
     st.markdown("---")
     st.markdown("<div class='section-title'>Optical Diagnostics & Parameters</div>", unsafe_allow_html=True)
 
-    h, w = int(raw_image.shape[0]), int(raw_image.shape[1])
-    depth_map = generate_depth_map((h, w), mode=str(depth_mode))
+    h, w = raw_image.shape[:2]
+    depth_map = generate_depth_map((h, w), mode=depth_mode)
     t_rgb = get_per_channel_transmission(
         depth_map,
-        float(turbidity_level),
-        beta_max_r=float(beta_max_r),
-        beta_max_g=float(beta_max_g),
-        beta_max_b=float(beta_max_b),
+        turbidity_level,
+        beta_max_r=beta_max_r,
+        beta_max_g=beta_max_g,
+        beta_max_b=beta_max_b,
     )
-    A = get_ambient_light_color(float(turbidity_level))
+    A = get_ambient_light_color(turbidity_level)
 
     d_col1, d_col2, d_col3, d_col4 = st.columns(4)
 
