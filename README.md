@@ -17,31 +17,18 @@
 <div align="center">
 
 <a href="#overview"><img src="https://img.shields.io/badge/Overview-1E293B?style=flat-square&logoColor=38BDF8" alt="Overview"/></a>
+<a href="#target-classes"><img src="https://img.shields.io/badge/Target_Classes-1E293B?style=flat-square&logoColor=38BDF8" alt="Classes"/></a>
 <a href="#tech-stack"><img src="https://img.shields.io/badge/Tech_Stack-1E293B?style=flat-square&logoColor=38BDF8" alt="Tech Stack"/></a>
 <a href="#physics-model"><img src="https://img.shields.io/badge/Physics_Model-1E293B?style=flat-square&logoColor=38BDF8" alt="Physics Model"/></a>
+<a href="#degradation-samples"><img src="https://img.shields.io/badge/Degradation_Samples-1E293B?style=flat-square&logoColor=38BDF8" alt="Samples"/></a>
 <a href="#dataset-statistics"><img src="https://img.shields.io/badge/Dataset_Stats-1E293B?style=flat-square&logoColor=38BDF8" alt="Dataset Stats"/></a>
 <a href="#installation"><img src="https://img.shields.io/badge/Installation-1E293B?style=flat-square&logoColor=38BDF8" alt="Installation"/></a>
-<a href="#usage-3-ways"><img src="https://img.shields.io/badge/Usage_Guide-1E293B?style=flat-square&logoColor=38BDF8" alt="Usage"/></a>
-<a href="#data-quality-notes"><img src="https://img.shields.io/badge/Data_Quality-1E293B?style=flat-square&logoColor=38BDF8" alt="Data Quality"/></a>
 
 </div>
 
 ---
 
 </div>
-
-## Tech Stack
-
-| Domain | Technologies & Badges | Core Function & Implementation |
-|:---|:---|:---|
-| **Scientific Computing** | [![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org) [![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)](https://numpy.org) [![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?style=flat-square&logo=scipy&logoColor=white)](https://scipy.org) [![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org) | Vectorized RGB matrix attenuation, depth array operations, and dataset metadata management |
-| **Computer Vision Engine** | [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white)](https://opencv.org) [![Pillow](https://img.shields.io/badge/Pillow-013243?style=flat-square&logo=python&logoColor=white)](https://python-pillow.org) | Transmission map filtering, spatial Gaussian contrast reduction, and marine snow synthesis |
-| **Interactive UI** | [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](generator/app.py) | Real-time turbidity parameter control, RGB spectral diagnostics, and side-by-side visual comparison |
-| **Data Versioning** | [![DVC](https://img.shields.io/badge/DVC-9CF0E1?style=flat-square&logo=dvc&logoColor=black)](https://dvc.org) [![Google Drive](https://img.shields.io/badge/Google_Drive-4285F4?style=flat-square&logo=googledrive&logoColor=white)](https://drive.google.com) | Remote dataset tracking and synchronization without bloating Git version history |
-| **Quality Control** | [![ImageHash](https://img.shields.io/badge/ImageHash_pHash-10B981?style=flat-square&logo=hashnode&logoColor=white)](scripts/audit_fauna_contamination.py) [![tqdm](https://img.shields.io/badge/tqdm-FFC107?style=flat-square&logo=python&logoColor=black)](scripts/package_dataset.py) | Perceptual hash contamination auditing ($\text{pHash} \le 8$ bits) & cluster-aware split partitioning |
-| **Annotation Standards** | [![COCO 1.0](https://img.shields.io/badge/COCO_1.0_JSON-00599C?style=flat-square&logo=json&logoColor=white)](dataset/dataset_card.md) [![PNG Masks](https://img.shields.io/badge/PNG_Masks-22C55E?style=flat-square&logo=png&logoColor=white)](dataset/dataset_card.md) | Polygon instance segmentations for mangroves and binary pixel-level segmentation masks for fauna |
-
----
 
 ## Overview
 
@@ -57,6 +44,30 @@ Underwater vision systems face severe performance degradation due to light absor
 * **Full Data Pipeline**: End-to-end implementation covering collection, annotation, generation, verification, and cluster-aware packaging.
 
 </details>
+
+---
+
+## Target Classes
+
+The dataset targets two core aquatic computer vision categories:
+
+| Class 1: `aquatic_fauna` (SUIM / DeepFish / F4K) | Class 2: `mangrove_root` (Underwater Dive Frames) |
+|:---:|:---:|
+| <img src="assets/samples/fauna_clean.jpg" width="460" alt="Aquatic Fauna Sample"/> | <img src="assets/samples/mangrove_clean.jpg" width="460" alt="Mangrove Root Sample"/> |
+| *Pixel-level instance segmentation mask (PNG)* | *Polygon COCO 1.0 JSON segmentation* |
+
+---
+
+## Tech Stack
+
+| Domain | Technologies & Badges | Core Function & Implementation |
+|:---|:---|:---|
+| **Scientific Computing** | [![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org) [![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)](https://numpy.org) [![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?style=flat-square&logo=scipy&logoColor=white)](https://scipy.org) [![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org) | Vectorized RGB matrix attenuation, depth array operations, and dataset metadata management |
+| **Computer Vision Engine** | [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white)](https://opencv.org) [![Pillow](https://img.shields.io/badge/Pillow-013243?style=flat-square&logo=python&logoColor=white)](https://python-pillow.org) | Transmission map filtering, spatial Gaussian contrast reduction, and marine snow synthesis |
+| **Interactive UI** | [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](generator/app.py) | Real-time turbidity parameter control, RGB spectral diagnostics, and side-by-side visual comparison |
+| **Data Versioning** | [![DVC](https://img.shields.io/badge/DVC-9CF0E1?style=flat-square&logo=dvc&logoColor=black)](https://dvc.org) [![Google Drive](https://img.shields.io/badge/Google_Drive-4285F4?style=flat-square&logo=googledrive&logoColor=white)](https://drive.google.com) | Remote dataset tracking and synchronization without bloating Git version history |
+| **Quality Control** | [![ImageHash](https://img.shields.io/badge/ImageHash_pHash-10B981?style=flat-square&logo=hashnode&logoColor=white)](scripts/audit_fauna_contamination.py) [![tqdm](https://img.shields.io/badge/tqdm-FFC107?style=flat-square&logo=python&logoColor=black)](scripts/package_dataset.py) | Perceptual hash contamination auditing ($\text{pHash} \le 8$ bits) & cluster-aware split partitioning |
+| **Annotation Standards** | [![COCO 1.0](https://img.shields.io/badge/COCO_1.0_JSON-00599C?style=flat-square&logo=json&logoColor=white)](dataset/dataset_card.md) [![PNG Masks](https://img.shields.io/badge/PNG_Masks-22C55E?style=flat-square&logo=png&logoColor=white)](dataset/dataset_card.md) | Polygon instance segmentations for mangroves and binary pixel-level segmentation masks for fauna |
 
 ---
 
@@ -84,6 +95,24 @@ Where:
 | **4. Marine Snow Noise** | Suspended particulate scattering | High-frequency salt-and-pepper noise overlay |
 
 </details>
+
+---
+
+## Degradation Samples
+
+### 1. `aquatic_fauna` Degradation Progression
+
+| Base Clear ($\tau = 0.0$) | Turbid $\tau = 0.2$ | Turbid $\tau = 0.4$ | Turbid $\tau = 0.6$ | Turbid $\tau = 0.8$ |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="assets/samples/fauna_clean.jpg" width="180" alt="Clean Fauna"/> | <img src="assets/samples/fauna_turb_0.2.jpg" width="180" alt="Fauna Turb 0.2"/> | <img src="assets/samples/fauna_turb_0.4.jpg" width="180" alt="Fauna Turb 0.4"/> | <img src="assets/samples/fauna_turb_0.6.jpg" width="180" alt="Fauna Turb 0.6"/> | <img src="assets/samples/fauna_turb_0.8.jpg" width="180" alt="Fauna Turb 0.8"/> |
+| *Clear Radiance $J(x)$* | *Low Attenuation* | *Moderate Haze* | *High Scattering* | *Severe Veil & Noise* |
+
+### 2. `mangrove_root` Degradation Progression
+
+| Base Clear ($\tau = 0.0$) | Turbid $\tau = 0.2$ | Turbid $\tau = 0.4$ | Turbid $\tau = 0.6$ | Turbid $\tau = 0.8$ |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="assets/samples/mangrove_clean.jpg" width="180" alt="Clean Mangrove"/> | <img src="assets/samples/mangrove_turb_0.2.jpg" width="180" alt="Mangrove Turb 0.2"/> | <img src="assets/samples/mangrove_turb_0.4.jpg" width="180" alt="Mangrove Turb 0.4"/> | <img src="assets/samples/mangrove_turb_0.6.jpg" width="180" alt="Mangrove Turb 0.6"/> | <img src="assets/samples/mangrove_turb_0.8.jpg" width="180" alt="Mangrove Turb 0.8"/> |
+| *Roboflow Frame* | *Low Attenuation* | *Moderate Haze* | *High Scattering* | *Severe Veil & Noise* |
 
 ---
 
@@ -124,6 +153,8 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 
 ```text
 turbid-water-project/
+├── assets/                       <- Project visual assets & sample preview images
+│   └── samples/                  <- Sample preview images for aquatic fauna & mangrove roots
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
 │   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
 │   ├── mangrove_frames/          <- 364 annotated mangrove root images (Roboflow export)
