@@ -1,34 +1,105 @@
 <div align="center">
 
-# TURBID WATER DATASET & OPTICAL DEGRADATION GENERATOR
-
-<p align="center">
-  <b>A physically-grounded underwater optical degradation simulator and benchmark dataset for computer vision under severe aquatic turbidity.</b>
-</p>
-
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-1E293B?style=for-the-badge&logo=python&logoColor=38BDF8)](https://python.org)
-[![Streamlit UI](https://img.shields.io/badge/Streamlit-Interactive_App-1E293B?style=for-the-badge&logo=streamlit&logoColor=38BDF8)](generator/app.py)
-[![DVC Tracked](https://img.shields.io/badge/DVC-Data_Versioned-1E293B?style=for-the-badge&logo=dvc&logoColor=38BDF8)](https://dvc.org)
-[![QA Verified](https://img.shields.io/badge/QA_Audit-Passed_100%25-1E293B?style=for-the-badge&logo=githubactions&logoColor=38BDF8)](scripts/audit_fauna_contamination.py)
-[![License: MIT](https://img.shields.io/badge/License-MIT-1E293B?style=for-the-badge&logo=open-access&logoColor=38BDF8)](LICENSE)
+<img src="assets/hero_banner.svg" alt="Turbid Water Dataset &amp; Optical Degradation Generator" width="100%" />
 
 <br/>
 
+<p align="center">
+  <b>Physically-Grounded Underwater Optical Degradation Simulator &amp; Cluster-Aware Benchmark Dataset</b>
+</p>
+
 <div align="center">
 
-<a href="#overview"><img src="https://img.shields.io/badge/Overview-1E293B?style=flat-square&logoColor=38BDF8" alt="Overview"/></a>
-<a href="#target-classes--annotations"><img src="https://img.shields.io/badge/Classes_&_Masks-1E293B?style=flat-square&logoColor=38BDF8" alt="Classes & Masks"/></a>
-<a href="#tech-stack"><img src="https://img.shields.io/badge/Tech_Stack-1E293B?style=flat-square&logoColor=38BDF8" alt="Tech Stack"/></a>
-<a href="#physics-model"><img src="https://img.shields.io/badge/Physics_Model-1E293B?style=flat-square&logoColor=38BDF8" alt="Physics Model"/></a>
-<a href="#degradation-samples"><img src="https://img.shields.io/badge/Degradation_Samples-1E293B?style=flat-square&logoColor=38BDF8" alt="Samples"/></a>
-<a href="#dataset-statistics"><img src="https://img.shields.io/badge/Dataset_Stats-1E293B?style=flat-square&logoColor=38BDF8" alt="Dataset Stats"/></a>
-<a href="#installation"><img src="https://img.shields.io/badge/Installation-1E293B?style=flat-square&logoColor=38BDF8" alt="Installation"/></a>
+[![Python](https://img.shields.io/badge/PYTHON-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![DVC](https://img.shields.io/badge/DVC-DATA_VERSIONED-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
+[![OpenCV](https://img.shields.io/badge/OPENCV-VISION_ENGINE-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
+[![Model](https://img.shields.io/badge/BEER--LAMBERT-OPTICAL_MODEL-0284C7?style=for-the-badge&logo=scipy&logoColor=white)](docs/turbidity_model.md)
+
+[![Streamlit](https://img.shields.io/badge/STREAMLIT-INTERACTIVE_APP-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
+[![Images](https://img.shields.io/badge/IMAGES-3%2C384_SYNTHETIC-10B981?style=for-the-badge&logo=png&logoColor=white)](#dataset-statistics)
+[![Levels](https://img.shields.io/badge/TURBIDITY-4_LEVELS-F59E0B?style=for-the-badge&logo=hashnode&logoColor=white)](#degradation-samples)
+[![QA Pass](https://img.shields.io/badge/QA_AUDIT-100%25_PASSED-059669?style=for-the-badge&logo=githubactions&logoColor=white)](scripts/audit_fauna_contamination.py)
+[![License](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge&logo=open-access&logoColor=white)](LICENSE)
+
+</div>
+
+<br/>
+
+<!-- Metric Summary Cards Grid -->
+<table>
+  <tr>
+    <td align="center" width="16.6%">
+      <b>DATASET</b><br/>
+      <font size="5"><b>846</b></font><br/>
+      <sub>Base Scenes</sub><br/>
+      <code>482 fauna + 364 mangrove</code>
+    </td>
+    <td align="center" width="16.6%">
+      <b>SYNTHETIC</b><br/>
+      <font size="5"><b>3,384</b></font><br/>
+      <sub>Packaged Images</sub><br/>
+      <code>4 Turbidity Levels</code>
+    </td>
+    <td align="center" width="16.6%">
+      <b>CLASSES</b><br/>
+      <font size="5"><b>2</b></font><br/>
+      <sub>Target Categories</sub><br/>
+      <code>mangrove + fauna</code>
+    </td>
+    <td align="center" width="16.6%">
+      <b>PHYSICS</b><br/>
+      <font size="5"><b>Beer-Lambert</b></font><br/>
+      <sub>Jaffe-McGlamery</sub><br/>
+      <code>4 Degradation Layers</code>
+    </td>
+    <td align="center" width="16.6%">
+      <b>LEAKAGE</b><br/>
+      <font size="5"><b>0.0%</b></font><br/>
+      <sub>Cross-Split Leakage</sub><br/>
+      <code>270 pHash Clusters</code>
+    </td>
+    <td align="center" width="16.6%">
+      <b>VERIFIED</b><br/>
+      <font size="5"><b>100%</b></font><br/>
+      <sub>Label QA Pass</sub><br/>
+      <code>verify_labels.py</code>
+    </td>
+  </tr>
+</table>
 
 </div>
 
 ---
 
+> **Semantic segmentation & classification dataset for submerged mangrove root structures and aquatic fauna, paired with a physically grounded Beer-Lambert optical turbidity simulator across 4 controlled degradation levels.**
+
+---
+
+<div align="center">
+
+## Table of Contents
+
+<table>
+  <tr>
+    <td align="center"><a href="#overview"><b>01 &bull; OVERVIEW</b></a></td>
+    <td align="center"><a href="#target-classes--annotations"><b>02 &bull; TARGET CLASSES</b></a></td>
+    <td align="center"><a href="#tech-stack"><b>03 &bull; TECH STACK</b></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="#physics-model"><b>04 &bull; PHYSICS MODEL</b></a></td>
+    <td align="center"><a href="#degradation-samples"><b>05 &bull; DEGRADATION SAMPLES</b></a></td>
+    <td align="center"><a href="#dataset-statistics"><b>06 &bull; DATASET STATS</b></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="#installation"><b>07 &bull; INSTALLATION</b></a></td>
+    <td align="center"><a href="#usage-3-ways"><b>08 &bull; USAGE GUIDE</b></a></td>
+    <td align="center"><a href="#data-quality-notes"><b>09 &bull; DATA QUALITY</b></a></td>
+  </tr>
+</table>
+
 </div>
+
+---
 
 ## Overview
 
@@ -153,8 +224,9 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 
 ```text
 turbid-water-project/
-├── assets/                       <- Project visual assets & sample preview images
-│   └── samples/                  <- Raw images & segmentation mask samples
+├── assets/                       <- Project visual assets, hero banner SVG & sample previews
+│   ├── hero_banner.svg           <- SVG vector hero header banner
+│   └── samples/                  <- Raw images, mask samples & degradation progressions
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
 │   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
 │   ├── mangrove_frames/          <- 364 annotated mangrove root images (Roboflow export)

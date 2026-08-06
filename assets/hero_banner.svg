@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="100%" height="100%">
+  <defs>
+    <!-- Dark Cyan-Blue Ocean Gradient -->
+    <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071728"/>
+      <stop offset="30%" stop-color="#0b2e4c"/>
+      <stop offset="65%" stop-color="#0284c7"/>
+      <stop offset="90%" stop-color="#0077b6"/>
+      <stop offset="100%" stop-color="#03045e"/>
+    </linearGradient>
+
+    <!-- Wave Overlay Gradient -->
+    <linearGradient id="waveOverlay" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00b4d8" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#90e0ef" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0077b6" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="glowShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#000000" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+
+  <!-- Main Rounded Hero Container -->
+  <rect width="1200" height="320" rx="16" fill="url(#heroGradient)"/>
+
+  <!-- Curved Bottom Wave Cut (Matching Reference Design) -->
+  <path d="M0,220 C350,150 750,280 1200,180 L1200,320 L0,320 Z" fill="url(#waveOverlay)"/>
+  <path d="M0,250 C450,200 850,290 1200,230 L1200,320 L0,320 Z" fill="#03045e" fill-opacity="0.5"/>
+
+  <!-- Subtle Top Glow Line -->
+  <line x1="40" y1="2" x2="1160" y2="2" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4"/>
+
+  <!-- Main Title -->
+  <text x="600" y="115" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="44" fill="#ffffff" letter-spacing="1" filter="url(#glowShadow)">
+    Turbid Water Dataset
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="170" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="28" fill="#caf0f8" letter-spacing="0.5" filter="url(#glowShadow)">
+    and Optical Degradation Generator
+  </text>
+
+  <!-- Highlight Callout Sub-Line -->
+  <text x="600" y="235" text-anchor="middle" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-weight="600" font-size="16" fill="#38bdf8" letter-spacing="1">
+    Jaffe-McGlamery Optical Model  &bull;  Beer-Lambert Law  &bull;  3,384 Benchmark Images
+  </text>
+</svg>
