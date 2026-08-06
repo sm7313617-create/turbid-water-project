@@ -153,19 +153,54 @@ The dataset targets two aquatic computer vision categories, provided with corres
 
 <br/>
 
-The synthetic dataset generator decouples batch orchestration (`generate.py`) from physical optical execution (`degradation.py`).
+The synthetic generator decouples batch orchestration (`generator/generate.py`) from physical optical execution (`generator/degradation.py`).
 
-<br/>
+### End-to-End Execution Flowchart
 
-<div align="center">
+```mermaid
+flowchart LR
+    subgraph S1 ["STAGE 01 &bull; BATCH INGESTION & CONTROLS (generate.py)"]
+        direction TB
+        A["Source Image Folders<br/>(data/raw & data/mangrove_frames)"] --> B["Stem Extraction & Annotation Linkage"]
+        B --> C["Turbidity Controller<br/>(0.2, 0.4, 0.6, 0.8)"]
+    end
 
-<img src="assets/pipeline_architecture.png" alt="Simulation Pipeline Architecture Graphic" width="100%" />
+    subgraph S2 ["STAGE 02 &bull; PHYSICAL OPTICS ENGINE (degradation.py)"]
+        direction TB
+        D["Depth Map Generator d(x)<br/>(Gradient / Radial Profiles)"] --> E["Beer-Lambert Transmission Map t_c(x)<br/>(Wavelength Attenuation: R=3.0, G=1.8, B=1.0)"]
+        E --> F["Ambient Backscatter Vector A<br/>(Depth-Weighted Blue-Green Veil)"]
+        F --> G["Jaffe-McGlamery Blending<br/>I(x) = J(x) &bull; t(x) + A &bull; (1 - t(x))"]
+        G --> H["Scattering Blur & Marine Snow<br/>(Gaussian Contrast Reduction + Particulates)"]
+    end
 
-</div>
+    subgraph S3 ["STAGE 03 &bull; OUTPUT & MANIFEST REGISTRY (generate.py)"]
+        direction TB
+        I["Traceable Filename<br/>{stem}_turb{level}.png"] --> J["Save Image<br/>(data/synthetic/)"]
+        J --> K["Manifest Log Entry<br/>(synthetic_manifest.csv)"]
+    end
 
-<br/>
+    S1 --> S2 --> S3
 
-### Module Component Breakdown
+    style S1 fill:#0f172a,stroke:#e63946,stroke-width:2px,color:#f8fafc
+    style S2 fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc
+    style S3 fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#f8fafc
+
+    style A fill:#1e293b,stroke:#334155,color:#f8fafc
+    style B fill:#1e293b,stroke:#334155,color:#f8fafc
+    style C fill:#1e293b,stroke:#e63946,color:#f8fafc
+
+    style D fill:#1e293b,stroke:#334155,color:#f8fafc
+    style E fill:#1e293b,stroke:#38bdf8,color:#f8fafc
+    style F fill:#1e293b,stroke:#334155,color:#f8fafc
+    style G fill:#1e293b,stroke:#38bdf8,color:#f8fafc
+    style H fill:#1e293b,stroke:#334155,color:#f8fafc
+
+    style I fill:#1e293b,stroke:#334155,color:#f8fafc
+    style J fill:#1e293b,stroke:#10b981,color:#f8fafc
+    style K fill:#1e293b,stroke:#10b981,color:#f8fafc
+```
+
+### Component Function Breakdown
 
 | Module File | Component Function | Input Parameters | Output & Purpose |
 |:---|:---|:---|:---|
@@ -272,7 +307,6 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 turbid-water-project/
 ├── assets/                       <- Project visual assets, hero banner PNG & section banners
 │   ├── hero_banner.png           <- Japanese minimalist design hero banner
-│   ├── pipeline_architecture.png <- High-res pipeline architecture graphic card
 │   ├── banners/                  <- Japanese aesthetic section header banners
 │   └── samples/                  <- Raw images, mask samples & degradation progressions
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
