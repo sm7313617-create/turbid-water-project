@@ -17,7 +17,7 @@
 <div align="center">
 
 <a href="#overview"><img src="https://img.shields.io/badge/Overview-1E293B?style=flat-square&logoColor=38BDF8" alt="Overview"/></a>
-<a href="#target-classes"><img src="https://img.shields.io/badge/Target_Classes-1E293B?style=flat-square&logoColor=38BDF8" alt="Classes"/></a>
+<a href="#target-classes--annotations"><img src="https://img.shields.io/badge/Classes_&_Masks-1E293B?style=flat-square&logoColor=38BDF8" alt="Classes & Masks"/></a>
 <a href="#tech-stack"><img src="https://img.shields.io/badge/Tech_Stack-1E293B?style=flat-square&logoColor=38BDF8" alt="Tech Stack"/></a>
 <a href="#physics-model"><img src="https://img.shields.io/badge/Physics_Model-1E293B?style=flat-square&logoColor=38BDF8" alt="Physics Model"/></a>
 <a href="#degradation-samples"><img src="https://img.shields.io/badge/Degradation_Samples-1E293B?style=flat-square&logoColor=38BDF8" alt="Samples"/></a>
@@ -47,14 +47,14 @@ Underwater vision systems face severe performance degradation due to light absor
 
 ---
 
-## Target Classes
+## Target Classes & Annotations
 
-The dataset targets two core aquatic computer vision categories:
+The dataset targets two aquatic computer vision categories, provided with corresponding ground-truth segmentation masks:
 
-| Class 1: `aquatic_fauna` (SUIM / DeepFish / F4K) | Class 2: `mangrove_root` (Underwater Dive Frames) |
-|:---:|:---:|
-| <img src="assets/samples/fauna_clean.jpg" width="460" alt="Aquatic Fauna Sample"/> | <img src="assets/samples/mangrove_clean.jpg" width="460" alt="Mangrove Root Sample"/> |
-| *Pixel-level instance segmentation mask (PNG)* | *Polygon COCO 1.0 JSON segmentation* |
+| Class 1: `aquatic_fauna` (Raw Image) | Class 1: `aquatic_fauna` (Binary Mask) | Class 2: `mangrove_root` (Raw Image) | Class 2: `mangrove_root` (COCO Mask Overlay) |
+|:---:|:---:|:---:|:---:|
+| <img src="assets/samples/fauna_clean.jpg" width="220" alt="Aquatic Fauna Raw Image"/> | <img src="assets/samples/fauna_mask.png" width="220" alt="Fauna Mask"/> | <img src="assets/samples/mangrove_clean.jpg" width="220" alt="Mangrove Root Raw Image"/> | <img src="assets/samples/mangrove_annotated.jpg" width="220" alt="Mangrove COCO Overlay"/> |
+| *SUIM / DeepFish / F4K Scene* | *Pixel-Level Instance Mask (PNG)* | *Underwater Dive Video Frame* | *COCO 1.0 JSON Polygon Annotation* |
 
 ---
 
@@ -154,7 +154,7 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 ```text
 turbid-water-project/
 ├── assets/                       <- Project visual assets & sample preview images
-│   └── samples/                  <- Sample preview images for aquatic fauna & mangrove roots
+│   └── samples/                  <- Raw images & segmentation mask samples
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
 │   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
 │   ├── mangrove_frames/          <- 364 annotated mangrove root images (Roboflow export)
