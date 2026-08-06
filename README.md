@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero_banner.svg" alt="Turbid Water Dataset &amp; Optical Degradation Generator" width="100%" />
+<img src="assets/hero_banner.png" alt="Turbid Water Dataset &amp; Optical Degradation Generator" width="100%" />
 
 <br/>
 
@@ -224,8 +224,8 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 
 ```text
 turbid-water-project/
-├── assets/                       <- Project visual assets, hero banner SVG & sample previews
-│   ├── hero_banner.svg           <- SVG vector hero header banner
+├── assets/                       <- Project visual assets, hero banner PNG & sample previews
+│   ├── hero_banner.png           <- High-resolution PNG hero banner
 │   └── samples/                  <- Raw images, mask samples & degradation progressions
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
 │   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
