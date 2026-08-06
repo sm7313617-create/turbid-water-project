@@ -1,9 +1,12 @@
 <div align="center">
 
-# Turbid Water Dataset & Optical Degradation Generator
+# TURBID WATER DATASET & OPTICAL DEGRADATION GENERATOR
+
+<p align="center">
+  <b>A physically-grounded underwater optical degradation simulator and benchmark dataset for computer vision under severe aquatic turbidity.</b>
+</p>
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
 [![Streamlit UI](https://img.shields.io/badge/Streamlit-Interactive_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
 [![DVC Tracked](https://img.shields.io/badge/DVC-Data_Versioned-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
 [![QA Verified](https://img.shields.io/badge/QA_Audit-Passed_100%25-10B981?style=for-the-badge&logo=githubactions&logoColor=white)](scripts/audit_fauna_contamination.py)
@@ -11,22 +14,57 @@
 
 <br/>
 
-<p align="center">
-  <b>A physically-grounded underwater optical degradation simulator and benchmark dataset for computer vision under severe aquatic turbidity.</b>
-</p>
-
-[Overview](#overview) &bull;
-[Tech Stack](#tech-stack) &bull;
-[Physics Model](#physics-model) &bull;
-[Dataset Statistics](#dataset-statistics) &bull;
-[Project Structure](#project-structure) &bull;
-[Installation](#installation) &bull;
-[Usage](#usage-3-ways) &bull;
-[Data Quality](#data-quality-notes)
+<table>
+  <tr>
+    <td align="center"><a href="#overview"><b>Overview</b></a></td>
+    <td align="center"><a href="#tech-stack"><b>Tech Stack</b></a></td>
+    <td align="center"><a href="#physics-model"><b>Physics Model</b></a></td>
+    <td align="center"><a href="#dataset-statistics"><b>Dataset Stats</b></a></td>
+    <td align="center"><a href="#installation"><b>Installation</b></a></td>
+    <td align="center"><a href="#usage-3-ways"><b>Usage</b></a></td>
+    <td align="center"><a href="#data-quality-notes"><b>Data Quality</b></a></td>
+  </tr>
+</table>
 
 ---
 
 </div>
+
+## Tech Stack
+
+<div align="center">
+
+### Core Computation & Math
+[![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![NumPy](https://img.shields.io/badge/NumPy_Array_Ops-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org)
+[![SciPy](https://img.shields.io/badge/SciPy_Math-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)](https://scipy.org)
+[![Pandas](https://img.shields.io/badge/Pandas_DataFrames-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org)
+
+### Vision & Degradation Engine
+[![OpenCV](https://img.shields.io/badge/OpenCV_Image_Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
+[![Pillow](https://img.shields.io/badge/Pillow_PIL-013243?style=for-the-badge&logo=python&logoColor=white)](https://python-pillow.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit_Interactive_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
+
+### Data Engineering & Storage
+[![DVC](https://img.shields.io/badge/DVC_Data_Version Control-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
+[![Google Drive](https://img.shields.io/badge/Google_Drive_Remote_Storage-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com)
+[![ImageHash](https://img.shields.io/badge/ImageHash_pHash_QA-10B981?style=for-the-badge&logo=hashnode&logoColor=white)](scripts/audit_fauna_contamination.py)
+[![COCO Format](https://img.shields.io/badge/COCO_1.0_JSON-00599C?style=for-the-badge&logo=json&logoColor=white)](dataset/dataset_card.md)
+
+</div>
+
+<br/>
+
+| Category | Technologies & Tools | Function & Purpose |
+|:---|:---|:---|
+| **Scientific Computing** | `Python 3.12` &bull; `NumPy` &bull; `SciPy` &bull; `Pandas` | High-performance array manipulation & physical optical matrix calculations |
+| **Computer Vision** | `OpenCV (cv2)` &bull; `Pillow (PIL)` | Spatial image transformations, depth map generation & spatial filtering |
+| **Interactive UI** | `Streamlit` | Web-based interactive simulator for real-time optical parameter tuning |
+| **Data Engineering** | `DVC` &bull; `Google Drive Remote` | Remote data sync, large file tracking & dataset versioning |
+| **Quality Control** | `ImageHash (pHash)` &bull; `tqdm` | Perceptual hash contamination auditing & cluster-aware split verification |
+| **Annotations** | `COCO 1.0 Specification` &bull; `PNG Instance Masks` | Polygon segmentations & pixel-level segmentation masks |
+
+---
 
 ## Overview
 
@@ -34,23 +72,14 @@ Underwater vision systems face severe performance degradation due to light absor
 
 > **Project Scope**: Developed for Internship Task 1 of 2.
 
-### Deliverables
+<details>
+<summary><b>Click to view Core Deliverables</b></summary>
+
 * **Degradation Generator**: A physically-grounded optical engine with adjustable turbidity parameters ($0.0$ to $1.0$).
 * **Synthetic Labeled Dataset**: 3,384 packaged synthetic images across 4 turbidity levels ($0.2, 0.4, 0.6, 0.8$) and 2 classes (`mangrove_root` and `aquatic_fauna`).
 * **Full Data Pipeline**: End-to-end implementation covering collection, annotation, generation, verification, and cluster-aware packaging.
 
----
-
-## Tech Stack
-
-| Category | Technologies & Tools | Function & Purpose |
-|:---|:---|:---|
-| **Core & Math** | `Python 3.12` &bull; `NumPy` &bull; `SciPy` &bull; `Pandas` | High-performance array manipulation & physical optical matrix calculations |
-| **Computer Vision** | `OpenCV (cv2)` &bull; `Pillow (PIL)` | Spatial image transformations, depth map generation & spatial filtering |
-| **Interactive UI** | `Streamlit` | Web-based interactive simulator for real-time optical parameter tuning |
-| **Data Versioning** | `DVC` &bull; `Google Drive Remote (dvc-gdrive)` | Remote data sync, large file tracking & dataset versioning |
-| **Quality Control** | `ImageHash (pHash)` &bull; `tqdm` | Perceptual hash contamination auditing & cluster-aware split verification |
-| **Data Formats** | `COCO 1.0 Specification` &bull; `PNG Instance Masks` | Polygon segmentations & pixel-level segmentation masks |
+</details>
 
 ---
 
@@ -67,7 +96,8 @@ Where:
 * $A$ is the ambient backscatter vector ($A = [0.10, 0.45, 0.40] \cdot \tau + [0.85, 0.90, 0.95] \cdot (1 - \tau)$).
 * $\text{turbidity}$ is a float parameter ranging from $0.0$ (crystal clear) to $1.0$ (maximum turbid).
 
-### Four Optical Effects Applied
+<details>
+<summary><b>Click to view Four Optical Effects</b></summary>
 
 ```text
 +-----------------------------------------------------------------------------------+
@@ -77,6 +107,8 @@ Where:
 | 4. Particulate Marine Snow       --> High-frequency suspended sediment noise      |
 +-----------------------------------------------------------------------------------+
 ```
+
+</details>
 
 ---
 
