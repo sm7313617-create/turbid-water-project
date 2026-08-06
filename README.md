@@ -153,36 +153,17 @@ The dataset targets two aquatic computer vision categories, provided with corres
 
 <br/>
 
-The synthetic generator decouples batch orchestration (`generate.py`) from physical optical execution (`degradation.py`).
+The synthetic dataset generator decouples batch orchestration (`generate.py`) from physical optical execution (`degradation.py`).
 
-### End-to-End Execution Flowchart
+<br/>
 
-```mermaid
-graph TD
-    subgraph Ingestion ["1. Batch Processor (generator/generate.py)"]
-        A["Raw Source Images<br/>(data/raw & data/mangrove_frames)"] --> B["Stem Extraction & Deduplication"]
-        B --> C["Turbidity Level Selector<br/>(0.2, 0.4, 0.6, 0.8)"]
-    end
+<div align="center">
 
-    subgraph Physics Engine ["2. Optical Physics Simulator (generator/degradation.py)"]
-        C --> D["Depth Map Generator d(x)<br/>(Linear Gradient / Radial)"]
-        D --> E["Beer-Lambert Transmission Map t_c(x)<br/>(Wavelength Attenuation: R=3.0, G=1.8, B=1.0)"]
-        E --> F["Ambient Backscatter Vector A<br/>(Depth-Weighted Blue-Green Veil)"]
-        F --> G["Jaffe-McGlamery Image Blending<br/>I(x) = J(x) * t(x) + A * (1 - t(x))"]
-        G --> H["Forward Scattering Blur<br/>(Gaussian Contrast Reduction)"]
-        H --> I["Particulate Noise Overlay<br/>(Marine Snow Sediment)"]
-    end
+<img src="assets/pipeline_architecture.png" alt="Simulation Pipeline Architecture Graphic" width="100%" />
 
-    subgraph Registry ["3. Output & Manifest Registry (generator/generate.py)"]
-        I --> J["Traceable Naming<br/>{stem}_turb{level}.png"]
-        J --> K["Save to data/synthetic/"]
-        K --> L["Register Entry in synthetic_manifest.csv"]
-    end
+</div>
 
-    style Ingestion fill:#101B33,stroke:#E63946,stroke-width:2px,color:#FFFFFF
-    style Physics Engine fill:#0D1627,stroke:#38BDF8,stroke-width:2px,color:#FFFFFF
-    style Registry fill:#101B33,stroke:#E63946,stroke-width:2px,color:#FFFFFF
-```
+<br/>
 
 ### Module Component Breakdown
 
@@ -291,6 +272,7 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 turbid-water-project/
 ├── assets/                       <- Project visual assets, hero banner PNG & section banners
 │   ├── hero_banner.png           <- Japanese minimalist design hero banner
+│   ├── pipeline_architecture.png <- High-res pipeline architecture graphic card
 │   ├── banners/                  <- Japanese aesthetic section header banners
 │   └── samples/                  <- Raw images, mask samples & degradation progressions
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
