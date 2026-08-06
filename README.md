@@ -91,9 +91,14 @@
     <td align="center"><a href="#dataset-statistics"><b>06 &bull; DATASET STATS</b></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="#installation"><b>07 &bull; INSTALLATION</b></a></td>
-    <td align="center"><a href="#usage-3-ways"><b>08 &bull; USAGE GUIDE</b></a></td>
-    <td align="center"><a href="#data-quality-notes"><b>09 &bull; DATA QUALITY</b></a></td>
+    <td align="center"><a href="#project-structure"><b>07 &bull; PROJECT STRUCTURE</b></a></td>
+    <td align="center"><a href="#installation"><b>08 &bull; INSTALLATION</b></a></td>
+    <td align="center"><a href="#usage-3-ways"><b>09 &bull; USAGE GUIDE</b></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="#dataset-integrity"><b>10 &bull; DATA INTEGRITY</b></a></td>
+    <td align="center"><a href="#data-quality-notes"><b>11 &bull; DATA QUALITY</b></a></td>
+    <td align="center"><a href="#data-sources"><b>12 &bull; DATA SOURCES</b></a></td>
   </tr>
 </table>
 
@@ -101,7 +106,10 @@
 
 ---
 
-## Overview
+<a id="overview"></a>
+<img src="assets/banners/overview.png" alt="01 | Overview" width="100%" />
+
+<br/>
 
 Underwater vision systems face severe performance degradation due to light absorption, backscattering, and suspended sediment. This project provides an end-to-end framework to simulate physical turbidity, verify multi-format annotations, and package a leak-free benchmark synthetic dataset for computer vision model training and evaluation.
 
@@ -118,7 +126,10 @@ Underwater vision systems face severe performance degradation due to light absor
 
 ---
 
-## Target Classes & Annotations
+<a id="target-classes--annotations"></a>
+<img src="assets/banners/classes.png" alt="02 | Target Classes &amp; Annotations" width="100%" />
+
+<br/>
 
 The dataset targets two aquatic computer vision categories, provided with corresponding ground-truth segmentation masks:
 
@@ -129,7 +140,10 @@ The dataset targets two aquatic computer vision categories, provided with corres
 
 ---
 
-## Tech Stack
+<a id="tech-stack"></a>
+<img src="assets/banners/techstack.png" alt="03 | Tech Stack" width="100%" />
+
+<br/>
 
 | Domain | Technologies & Badges | Core Function & Implementation |
 |:---|:---|:---|
@@ -142,7 +156,10 @@ The dataset targets two aquatic computer vision categories, provided with corres
 
 ---
 
-## Physics Model
+<a id="physics-model"></a>
+<img src="assets/banners/physics.png" alt="04 | Physics Model" width="100%" />
+
+<br/>
 
 The degradation engine implements the classic **Jaffe-McGlamery Underwater Image Formation Model**:
 
@@ -169,7 +186,10 @@ Where:
 
 ---
 
-## Degradation Samples
+<a id="degradation-samples"></a>
+<img src="assets/banners/samples.png" alt="05 | Degradation Samples" width="100%" />
+
+<br/>
 
 ### 1. `aquatic_fauna` Degradation Progression
 
@@ -187,7 +207,10 @@ Where:
 
 ---
 
-## Dataset Statistics
+<a id="dataset-statistics"></a>
+<img src="assets/banners/stats.png" alt="06 | Dataset Statistics" width="100%" />
+
+<br/>
 
 The packaged benchmark dataset contains **3,384 synthetic images** generated from **846 unique base scenes** (482 fauna + 364 mangrove roots) across 4 controlled turbidity levels ($0.2, 0.4, 0.6, 0.8$).
 
@@ -220,12 +243,16 @@ The packaged benchmark dataset contains **3,384 synthetic images** generated fro
 
 ---
 
-## Project Structure
+<a id="project-structure"></a>
+<img src="assets/banners/structure.png" alt="07 | Project Structure" width="100%" />
+
+<br/>
 
 ```text
 turbid-water-project/
-├── assets/                       <- Project visual assets, hero banner PNG & sample previews
-│   ├── hero_banner.png           <- High-resolution PNG hero banner
+├── assets/                       <- Project visual assets & section header banners
+│   ├── hero_banner.png           <- High-resolution hero banner
+│   ├── banners/                  <- Section header banner images
 │   └── samples/                  <- Raw images, mask samples & degradation progressions
 ├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
 │   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
@@ -265,7 +292,10 @@ turbid-water-project/
 
 ---
 
-## Installation
+<a id="installation"></a>
+<img src="assets/banners/installation.png" alt="08 | Installation" width="100%" />
+
+<br/>
 
 ```bash
 # 1. Clone the repository
@@ -285,7 +315,10 @@ dvc pull
 
 ---
 
-## Usage (3 Ways)
+<a id="usage-3-ways"></a>
+<img src="assets/banners/usage.png" alt="09 | Usage Guide" width="100%" />
+
+<br/>
 
 | Execution Mode | Primary Purpose | Command |
 |:---|:---|:---|
@@ -295,7 +328,10 @@ dvc pull
 
 ---
 
-## Dataset Integrity
+<a id="dataset-integrity"></a>
+<img src="assets/banners/integrity.png" alt="10 | Dataset Integrity" width="100%" />
+
+<br/>
 
 Verify multi-format label integrity and content hash uniqueness across all raw images, masks, and packaged splits:
 
@@ -307,7 +343,10 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 
 ---
 
-## Data Quality Notes
+<a id="data-quality-notes"></a>
+<img src="assets/banners/quality.png" alt="11 | Data Quality Notes" width="100%" />
+
+<br/>
 
 1. **Quarantined Contaminated Footage**: An automated perceptual hash audit (`scripts/audit_fauna_contamination.py`) identified 18 initial DeepFish files (`deepfish_00001` through `deepfish_00018`) as mislabeled mangrove underwater dive footage. These 18 stems and their corresponding masks/synthetic variants were quarantined to `_quarantined_mangrove_mislabeled/` folders and excluded from the raw fauna dataset.
 2. **Cluster-Aware Leakage Prevention**: Using pHash connected-component clustering ($\text{pHash} \le 8$ bits), 270 near-duplicate video frame clusters were identified across DeepFish and Fish4Knowledge. All images belonging to the same cluster were constrained to land in the exact same split, ensuring **zero data leakage** across train, val, and test splits.
@@ -315,7 +354,10 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 
 ---
 
-## Data Sources
+<a id="data-sources"></a>
+<img src="assets/banners/sources.png" alt="12 | Data Sources" width="100%" />
+
+<br/>
 
 * **SUIM Dataset**: 150 clean aquatic fauna images and pixel-level segmentation masks.
 * **DeepFish Dataset**: 182 clean marine fish images and pixel-level segmentation masks (after quarantining 18 mislabeled stems).
@@ -324,7 +366,10 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 
 ---
 
-## License
+<a id="license"></a>
+<img src="assets/banners/license.png" alt="13 | License" width="100%" />
+
+<br/>
 
 Distributed under the MIT License. See `LICENSE` for details.
 
