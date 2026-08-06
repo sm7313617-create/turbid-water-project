@@ -1,16 +1,38 @@
-# Turbid Water Dataset & Degradation Generator
+<div align="center">
+
+# Turbid Water Dataset & Optical Degradation Generator
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
+[![Streamlit UI](https://img.shields.io/badge/Streamlit-Interactive_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](generator/app.py)
 [![DVC Tracked](https://img.shields.io/badge/DVC-Data_Versioned-9CF0E1?style=for-the-badge&logo=dvc&logoColor=black)](https://dvc.org)
+[![QA Verified](https://img.shields.io/badge/QA_Audit-Passed_100%25-10B981?style=for-the-badge&logo=githubactions&logoColor=white)](scripts/audit_fauna_contamination.py)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-An end-to-end framework that applies physically-grounded underwater optical degradation to clean imagery, producing a benchmark synthetic turbid dataset covering two target classes: `mangrove_root` and `aquatic_fauna`. Developed for Internship Task 1 of 2.
+<br/>
+
+<p align="center">
+  <b>A physically-grounded underwater optical degradation simulator and benchmark dataset for computer vision under severe aquatic turbidity.</b>
+</p>
+
+[Overview](#overview) &bull;
+[Tech Stack](#tech-stack) &bull;
+[Physics Model](#physics-model) &bull;
+[Dataset Statistics](#dataset-statistics) &bull;
+[Project Structure](#project-structure) &bull;
+[Installation](#installation) &bull;
+[Usage](#usage-3-ways) &bull;
+[Data Quality](#data-quality-notes)
 
 ---
 
+</div>
+
 ## Overview
 
-Underwater vision systems face severe degradation due to light absorption, backscattering, and suspended sediment. This project provides a complete pipeline to generate, verify, and package a synthetic turbid dataset to train and evaluate computer vision models robust to visibility loss.
+Underwater vision systems face severe performance degradation due to light absorption, backscattering, and suspended sediment. This project provides an end-to-end framework to simulate physical turbidity, verify multi-format annotations, and package a leak-free benchmark synthetic dataset for computer vision model training and evaluation.
+
+> **Project Scope**: Developed for Internship Task 1 of 2.
 
 ### Deliverables
 * **Degradation Generator**: A physically-grounded optical engine with adjustable turbidity parameters ($0.0$ to $1.0$).
@@ -21,33 +43,40 @@ Underwater vision systems face severe degradation due to light absorption, backs
 
 ## Tech Stack
 
-* **Core Language & Scientific Computing**: Python 3.12, NumPy, SciPy, Pandas
-* **Computer Vision & Image Processing**: OpenCV (`cv2`), Pillow (`PIL`)
-* **Interactive Simulator Interface**: Streamlit
-* **Data Versioning & Remote Storage**: DVC (Data Version Control), Google Drive Remote (`dvc-gdrive`)
-* **Quality Assurance & Perceptual Hashing**: ImageHash (pHash algorithm), `tqdm`
-* **Data Annotation Specifications**: COCO 1.0 JSON Format, Binary PNG Instance Masks
+| Category | Technologies & Tools | Function & Purpose |
+|:---|:---|:---|
+| **Core & Math** | `Python 3.12` &bull; `NumPy` &bull; `SciPy` &bull; `Pandas` | High-performance array manipulation & physical optical matrix calculations |
+| **Computer Vision** | `OpenCV (cv2)` &bull; `Pillow (PIL)` | Spatial image transformations, depth map generation & spatial filtering |
+| **Interactive UI** | `Streamlit` | Web-based interactive simulator for real-time optical parameter tuning |
+| **Data Versioning** | `DVC` &bull; `Google Drive Remote (dvc-gdrive)` | Remote data sync, large file tracking & dataset versioning |
+| **Quality Control** | `ImageHash (pHash)` &bull; `tqdm` | Perceptual hash contamination auditing & cluster-aware split verification |
+| **Data Formats** | `COCO 1.0 Specification` &bull; `PNG Instance Masks` | Polygon segmentations & pixel-level segmentation masks |
 
 ---
 
 ## Physics Model
 
-The generator simulates optical degradation using the **Jaffe-McGlamery Underwater Image Formation Model**:
+The degradation engine implements the classic **Jaffe-McGlamery Underwater Image Formation Model**:
 
 $$I(x) = J(x) \cdot t(x) + A \cdot (1 - t(x))$$
 
 Where:
-* $J(x)$ is the clean input image radiance.
+* $J(x)$ is the clean input image radiance at scene point $x$.
 * $t(x) = \exp(-\beta_c \cdot \text{turbidity} \cdot d(x))$ is the 3-channel transmission map derived from Beer-Lambert's Law, where attenuation coefficients vary by wavelength ($\beta_r = 3.0$, $\beta_g = 1.8$, $\beta_b = 1.0$).
 * $d(x)$ is the normalized scene depth map ($0.0 = \text{near}, 1.0 = \text{far}$).
-* $A$ is the ambient backscatter vector (blue-green tinted veil).
+* $A$ is the ambient backscatter vector ($A = [0.10, 0.45, 0.40] \cdot \tau + [0.85, 0.90, 0.95] \cdot (1 - \tau)$).
 * $\text{turbidity}$ is a float parameter ranging from $0.0$ (crystal clear) to $1.0$ (maximum turbid).
 
-### Four Degradation Effects Applied
-1. **Wavelength Color Attenuation**: Selective absorption causing red light to decay faster than green/blue.
-2. **Backscatter Haze**: Additive ambient veil increasing with distance and turbidity.
-3. **Forward Scattering Blur**: Local spatial contrast reduction via Gaussian kernel scaling.
-4. **Particulate Marine Snow**: Random high-frequency particle noise representing suspended sediment.
+### Four Optical Effects Applied
+
+```text
++-----------------------------------------------------------------------------------+
+| 1. Wavelength Color Attenuation  --> Selective red light decay (Beer-Lambert Law) |
+| 2. Backscatter Haze              --> Additive ambient veil tint (depth-dependent) |
+| 3. Forward Scattering Blur       --> Gaussian spatial contrast reduction          |
+| 4. Particulate Marine Snow       --> High-frequency suspended sediment noise      |
++-----------------------------------------------------------------------------------+
+```
 
 ---
 
@@ -55,21 +84,21 @@ Where:
 
 The packaged dataset contains **3,384 synthetic images** derived from **846 unique base scenes** (482 fauna + 364 mangrove roots) $\times 4$ turbidity levels ($0.2, 0.4, 0.6, 0.8$).
 
-| Split | Class | turb0.2 | turb0.4 | turb0.6 | turb0.8 | Subtotal | Base Scenes |
+| Split | Class | `turb0.2` | `turb0.4` | `turb0.6` | `turb0.8` | Split Total | Base Scenes |
 |:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **train** | `mangrove_root` | 255 | 255 | 255 | 255 | 1,020 | 255 |
-| **train** | `aquatic_fauna` | 337 | 337 | 337 | 337 | 1,348 | 337 |
-| **train Subtotal** | | **592** | **592** | **592** | **592** | **2,368 (70%)** | **592** |
+| **`train`** | `mangrove_root` | 255 | 255 | 255 | 255 | 1,020 | 255 |
+| **`train`** | `aquatic_fauna` | 337 | 337 | 337 | 337 | 1,348 | 337 |
+| **`train` Subtotal** | | **592** | **592** | **592** | **592** | **2,368 (70%)** | **592** |
 | | | | | | | | |
-| **val** | `mangrove_root` | 54 | 54 | 54 | 54 | 216 | 54 |
-| **val** | `aquatic_fauna` | 71 | 71 | 71 | 71 | 284 | 71 |
-| **val Subtotal** | | **125** | **125** | **125** | **125** | **500 (15%)** | **125** |
+| **`val`** | `mangrove_root` | 54 | 54 | 54 | 54 | 216 | 54 |
+| **`val`** | `aquatic_fauna` | 71 | 71 | 71 | 71 | 284 | 71 |
+| **`val` Subtotal** | | **125** | **125** | **125** | **125** | **500 (15%)** | **125** |
 | | | | | | | | |
-| **test** | `mangrove_root` | 55 | 55 | 55 | 55 | 220 | 55 |
-| **test** | `aquatic_fauna` | 74 | 74 | 74 | 74 | 296 | 74 |
-| **test Subtotal** | | **129** | **129** | **129** | **129** | **516 (15%)** | **129** |
+| **`test`** | `mangrove_root` | 55 | 55 | 55 | 55 | 220 | 55 |
+| **`test`** | `aquatic_fauna` | 74 | 74 | 74 | 74 | 296 | 74 |
+| **`test` Subtotal** | | **129** | **129** | **129** | **129** | **516 (15%)** | **129** |
 | | | | | | | | |
-| **TOTAL** | **ALL CLASSES** | **846** | **846** | **846** | **846** | **3,384** | **846** |
+| **GRAND TOTAL** | **ALL CLASSES** | **846** | **846** | **846** | **846** | **3,384** | **846** |
 
 ### Annotation Formats
 * **PNG Segmentation Masks**: Used for `aquatic_fauna` base images (pixel-level mask PNGs).
@@ -81,45 +110,40 @@ The packaged dataset contains **3,384 synthetic images** derived from **846 uniq
 
 ```text
 turbid-water-project/
-  data/
-    raw/                          ← 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
-    mangrove_frames/              ← 364 annotated mangrove root images (Roboflow export)
-    synthetic/                    ← 3,460 turbid synthetic images (generator output)
-    annotations/
-      fauna/
-        suim_masks/               ← 150 PNG masks
-        deepfish_masks/           ← 182 PNG masks (18 quarantined, contamination caught)
-        f4k_masks/                ← 150 PNG masks
-      mangrove/
-        train_annotations.coco.json
-        valid_annotations.coco.json
-        test_annotations.coco.json
-  dataset/
-    train/                        ← 2,368 images (70%)
-    val/                          ← 500 images (15%)
-    test/                         ← 516 images (15%)
-    class_map.json
-    dataset_card.md
-  generator/
-    degradation.py                ← core turbidity physics engine
-    utils.py                      ← helper functions
-    generate.py                   ← CLI bulk processor
-    app.py                        ← Streamlit UI with turbidity slider
-  labeling/
-    collectors/                   ← filter_suim.py, filter_deepfish.py, filter_fish4knowledge.py
-    logs/                         ← selection and skipped CSVs
-    extract_frames.py             ← video frame extractor tool
-    verify_labels.py              ← label integrity checker
-  scripts/
-    package_dataset.py            ← dataset splitter with cluster-aware leakage prevention
-    audit_fauna_contamination.py  ← pHash contamination scanner
-  notebooks/
-    01_degradation_demo.ipynb     ← visual demo of the generator
-  docs/
-    turbidity_model.md
-  .dvc/                           ← DVC configuration
-  requirements.txt
-  .gitignore
+├── data/                         <- DVC-tracked raw data & synthetic outputs (Google Drive)
+│   ├── raw/                      <- 482 clean aquatic fauna images (SUIM/DeepFish/F4K)
+│   ├── mangrove_frames/          <- 364 annotated mangrove root images (Roboflow export)
+│   ├── synthetic/                <- 3,460 turbid synthetic images (generator output)
+│   └── annotations/              <- Masks (fauna) & COCO JSON (mangroves)
+│       ├── fauna/                <- suim_masks (150), deepfish_masks (182), f4k_masks (150)
+│       └── mangrove/             <- train, valid, test COCO annotations
+├── dataset/                      <- Final packaged benchmark dataset
+│   ├── train/                    <- Train split (2,368 images)
+│   ├── val/                      <- Validation split (500 images)
+│   ├── test/                     <- Test split (516 images)
+│   ├── class_map.json            <- Category mapping {0: mangrove_root, 1: aquatic_fauna}
+│   └── dataset_card.md           <- Detailed dataset card & python data loader
+├── generator/                    <- Optical Degradation Core Engine
+│   ├── app.py                    <- Streamlit UI with turbidity slider
+│   ├── degradation.py            <- Core turbidity physics engine
+│   ├── generate.py               <- CLI bulk processor
+│   └── utils.py                  <- Helper functions
+├── labeling/                     <- Annotation verification & frame extraction
+│   ├── collectors/               <- Data collection & filter scripts
+│   ├── logs/                     <- Selection and skipped CSV logs
+│   ├── extract_frames.py         <- Video frame extractor tool
+│   └── verify_labels.py          <- Label integrity checker
+├── scripts/                      <- QA & Dataset Packaging Utilities
+│   ├── audit_fauna_contamination.py <- pHash contamination scanner
+│   └── package_dataset.py        <- Dataset splitter with cluster-aware leakage prevention
+├── notebooks/                    <- Visual Demos
+│   └── 01_degradation_demo.ipynb <- Visual demo notebook of generator
+├── docs/                         <- Documentation
+│   └── turbidity_model.md        <- Physics equations reference
+├── .dvc/                         <- DVC configuration
+├── pyrightconfig.json            <- IDE type checker configuration
+├── requirements.txt              <- Project dependencies
+└── README.md                     <- Project documentation
 ```
 
 ---
@@ -127,18 +151,18 @@ turbid-water-project/
 ## Installation
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/sm7313617-create/turbid-water-project.git
 cd turbid-water-project
 
-# Setup virtual environment
+# 2. Setup virtual environment
 python -m venv venv
-venv\Scripts\activate        # Windows PowerShell / CMD
+.\venv\Scripts\activate        # Windows PowerShell / CMD
 
-# Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# Pull DVC-tracked dataset files from Google Drive remote
+# 4. Pull DVC-tracked dataset files from Google Drive remote
 dvc pull
 ```
 
@@ -188,13 +212,19 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 
 ## Data Sources
 
-1. **SUIM Dataset**: 150 clean aquatic fauna images and pixel-level segmentation masks.
-2. **DeepFish Dataset**: 182 clean marine fish images and pixel-level segmentation masks (after quarantining 18 mislabeled stems).
-3. **Fish4Knowledge (F4K) Dataset**: 150 aquatic fauna images under varying lighting conditions.
-4. **Underwater Mangrove Footage**: 364 frames extracted from YouTube underwater mangrove dive videos, annotated for `mangrove_root` via Roboflow.
+* **SUIM Dataset**: 150 clean aquatic fauna images and pixel-level segmentation masks.
+* **DeepFish Dataset**: 182 clean marine fish images and pixel-level segmentation masks (after quarantining 18 mislabeled stems).
+* **Fish4Knowledge (F4K) Dataset**: 150 aquatic fauna images under varying lighting conditions.
+* **Underwater Mangrove Footage**: 364 frames extracted from YouTube underwater mangrove dive videos, annotated for `mangrove_root` via Roboflow.
 
 ---
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for details.
+
+---
+
+<div align="center">
+  <sub>Developed for the <b>Turbid Water Project</b> &bull; Built with Python, Streamlit, and DVC</sub>
+</div>
