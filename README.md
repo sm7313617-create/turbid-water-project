@@ -61,8 +61,9 @@ An end-to-end framework that applies physically-grounded underwater optical degr
 ## Table of Contents
 
 * [Overview](#overview)
+* [Target Classes & Ground-Truth Masks](#target-classes--ground-truth-masks)
 * [Tech Stack](#tech-stack)
-* [Physics Model](#physics-model)
+* [Physics Model & Degradation Samples](#physics-model--degradation-samples)
 * [Simulation Pipeline Breakdown](#simulation-pipeline-breakdown)
 * [Dataset Statistics](#dataset-statistics)
 * [Project Structure](#project-structure)
@@ -86,6 +87,17 @@ Underwater vision systems face severe performance degradation due to light absor
 
 ---
 
+## Target Classes & Ground-Truth Masks
+
+The benchmark dataset targets two aquatic computer vision categories, provided with corresponding ground-truth segmentation masks:
+
+| Class 1: `aquatic_fauna` (Raw Image) | Class 1: `aquatic_fauna` (Instance Mask) | Class 2: `mangrove_root` (Raw Image) | Class 2: `mangrove_root` (COCO Mask Overlay) |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/images/fauna_raw.jpg" width="220" alt="Aquatic Fauna Raw Image"/> | <img src="docs/images/fauna_mask.png" width="220" alt="Fauna Mask"/> | <img src="docs/images/mangrove_raw.jpg" width="220" alt="Mangrove Root Raw Image"/> | <img src="docs/images/mangrove_mask.jpg" width="220" alt="Mangrove COCO Mask Overlay"/> |
+| *SUIM / DeepFish / F4K Scene* | *Pixel-Level Instance Mask (PNG)* | *Underwater Dive Video Frame* | *COCO 1.0 JSON Polygon Annotation* |
+
+---
+
 ## Tech Stack
 
 | Domain | Technologies | Core Function & Implementation |
@@ -99,7 +111,7 @@ Underwater vision systems face severe performance degradation due to light absor
 
 ---
 
-## Physics Model
+## Physics Model & Degradation Samples
 
 The degradation engine implements the classic **Jaffe-McGlamery Underwater Image Formation Model**:
 
@@ -120,6 +132,22 @@ Where:
 | **2. Backscatter Haze** | Ambient veil accumulation | Depth-weighted additive tinting ($A \cdot (1 - t(x))$) |
 | **3. Scattering Blur** | Forward light scattering contrast drop | Dynamic Gaussian spatial kernel ($k = 2 \cdot \lfloor 4\tau \rfloor + 1$) |
 | **4. Marine Snow Noise** | Suspended particulate scattering | High-frequency salt-and-pepper noise overlay |
+
+### Degradation Progression Samples
+
+#### 1. `aquatic_fauna` Turbidity Progression
+
+| Base Clear ($\tau = 0.0$) | Turbid $\tau = 0.2$ | Turbid $\tau = 0.4$ | Turbid $\tau = 0.6$ | Turbid $\tau = 0.8$ |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="docs/images/fauna_raw.jpg" width="180" alt="Clean Fauna"/> | <img src="docs/images/fauna_turb_0.2.jpg" width="180" alt="Fauna Turb 0.2"/> | <img src="docs/images/fauna_turb_0.4.jpg" width="180" alt="Fauna Turb 0.4"/> | <img src="docs/images/fauna_turb_0.6.jpg" width="180" alt="Fauna Turb 0.6"/> | <img src="docs/images/fauna_turb_0.8.jpg" width="180" alt="Fauna Turb 0.8"/> |
+| *Clear Radiance $J(x)$* | *Low Attenuation* | *Moderate Haze* | *High Scattering* | *Severe Veil & Noise* |
+
+#### 2. `mangrove_root` Turbidity Progression
+
+| Base Clear ($\tau = 0.0$) | Turbid $\tau = 0.2$ | Turbid $\tau = 0.4$ | Turbid $\tau = 0.6$ | Turbid $\tau = 0.8$ |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="docs/images/mangrove_raw.jpg" width="180" alt="Clean Mangrove"/> | <img src="docs/images/mangrove_turb_0.2.jpg" width="180" alt="Mangrove Turb 0.2"/> | <img src="docs/images/mangrove_turb_0.4.jpg" width="180" alt="Mangrove Turb 0.4"/> | <img src="docs/images/mangrove_turb_0.6.jpg" width="180" alt="Mangrove Turb 0.6"/> | <img src="docs/images/mangrove_turb_0.8.jpg" width="180" alt="Mangrove Turb 0.8"/> |
+| *Roboflow Frame* | *Low Attenuation* | *Moderate Haze* | *High Scattering* | *Severe Veil & Noise* |
 
 ---
 
@@ -241,7 +269,8 @@ turbid-water-project/
 │   └── package_dataset.py        <- Dataset splitter with cluster-aware leakage prevention
 ├── notebooks/                    <- Visual Demos
 │   └── 01_degradation_demo.ipynb <- Visual demo notebook of generator
-├── docs/                         <- Documentation
+├── docs/                         <- Documentation & Sample Images
+│   ├── images/                   <- Sample raw images, masks & turbidity progressions
 │   └── turbidity_model.md        <- Physics equations reference
 ├── .dvc/                         <- DVC configuration
 ├── pyrightconfig.json            <- IDE type checker configuration
@@ -313,3 +342,9 @@ All data files are version-controlled using **DVC** and stored on a remote Googl
 ## License
 
 Distributed under the MIT License. See `LICENSE` for details.
+
+---
+
+<div align="center">
+  <sub>Developed for the <b>Turbid Water Project</b> &bull; Built with Python, Streamlit, and DVC</sub>
+</div>
