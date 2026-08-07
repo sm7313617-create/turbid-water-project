@@ -15,6 +15,8 @@ Physics Principles Covered:
 5. Suspended Sediment (Marine Snow): Random particles scatter direct illumination, producing bright specks.
 """
 
+from __future__ import annotations
+
 import os
 import cv2
 import numpy as np
@@ -265,7 +267,7 @@ def add_particle_noise(
 def reduce_local_contrast(
     image: np.ndarray,
     turbidity_level: float,
-    depth_map: np.ndarray = None,
+    depth_map: np.ndarray | None = None,
     blur_ksize: int = 25,
     max_blend: float = 0.5
 ) -> np.ndarray:

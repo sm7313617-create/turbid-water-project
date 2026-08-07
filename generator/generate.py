@@ -86,7 +86,7 @@ def batch_generate(
     output_dir: str = "data/synthetic",
     turbidity_levels: list = [0.2, 0.4, 0.6, 0.8],
     depth_mode: str = "gradient",
-    max_images: int = None,
+    max_images: int | None = None,
     overwrite: bool = False,
 ):
     """
