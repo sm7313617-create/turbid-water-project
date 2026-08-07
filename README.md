@@ -106,7 +106,7 @@ The benchmark dataset targets two aquatic computer vision categories, provided w
 | **Computer Vision Engine** | `OpenCV (cv2)` &bull; `Pillow (PIL)` | Transmission map filtering, spatial Gaussian contrast reduction, and marine snow synthesis |
 | **Interactive UI** | `Streamlit` | Real-time turbidity parameter control, RGB spectral diagnostics, and side-by-side visual comparison |
 | **Data Versioning** | `DVC` &bull; `Google Drive Remote (dvc-gdrive)` | Remote dataset tracking and synchronization without bloating Git version history |
-| **Quality Control** | `ImageHash (pHash)` &bull; `tqdm` | Perceptual hash contamination auditing ($\text{pHash} \le 8$ bits) & cluster-aware split partitioning |
+| **Quality Control** | `ImageHash (pHash)` &bull; `tqdm` | Perceptual hash contamination auditing (`pHash` ≤ 8 bits) & cluster-aware split partitioning |
 | **Annotation Standards** | `COCO 1.0 JSON` &bull; `PNG Instance Masks` | Polygon instance segmentations for mangroves and binary pixel-level segmentation masks for fauna |
 
 ---
@@ -118,19 +118,19 @@ The degradation engine implements the classic **Jaffe-McGlamery Underwater Image
 $$I(x) = J(x) \cdot t(x) + A \cdot (1 - t(x))$$
 
 Where:
-* $J(x)$ is the clean input image radiance at scene point $x$.
-* $t(x) = \exp(-\beta_c \cdot \text{turbidity} \cdot d(x))$ is the 3-channel transmission map derived from Beer-Lambert's Law, where attenuation coefficients vary by wavelength ($\beta_r = 3.0$, $\beta_g = 1.8$, $\beta_b = 1.0$).
-* $d(x)$ is the normalized scene depth map ($0.0 = \text{near}, 1.0 = \text{far}$).
-* $A$ is the ambient backscatter vector ($A = [0.10, 0.45, 0.40] \cdot \tau + [0.85, 0.90, 0.95] \cdot (1 - \tau)$).
-* $\text{turbidity}$ is a float parameter ranging from $0.0$ (crystal clear) to $1.0$ (maximum turbid).
+* **`J(x)`** is the clean input image radiance at scene point `x`.
+* **`t(x) = exp(-β_c × turbidity × d(x))`** is the 3-channel transmission map derived from Beer-Lambert's Law, where attenuation coefficients vary by wavelength (`β_r = 3.0`, `β_g = 1.8`, `β_b = 1.0`).
+* **`d(x)`** is the normalized scene depth map (`0.0` = near, `1.0` = far).
+* **`A`** is the ambient backscatter vector (`A = [0.10, 0.45, 0.40] × τ + [0.85, 0.90, 0.95] × (1 - τ)`).
+* **`turbidity`** is a float parameter ranging from `0.0` (crystal clear) to `1.0` (maximum turbid).
 
 ### Four Optical Degradation Layers
 
 | Effect Layer | Physical Mechanism | Implementation Detail |
 |:---|:---|:---|
-| **1. Color Attenuation** | Selective red-spectrum absorption | Beer-Lambert exponential decay ($\beta_r = 3.0, \beta_g = 1.8, \beta_b = 1.0$) |
-| **2. Backscatter Haze** | Ambient veil accumulation | Depth-weighted additive tinting ($A \cdot (1 - t(x))$) |
-| **3. Scattering Blur** | Forward light scattering contrast drop | Dynamic Gaussian spatial kernel ($k = 2 \cdot \lfloor 4\tau \rfloor + 1$) |
+| **1. Color Attenuation** | Selective red-spectrum absorption | Beer-Lambert exponential decay (`β_r = 3.0`, `β_g = 1.8`, `β_b = 1.0`) |
+| **2. Backscatter Haze** | Ambient veil accumulation | Depth-weighted additive tinting: `A × (1 - t(x))` |
+| **3. Scattering Blur** | Forward light scattering contrast drop | Dynamic Gaussian spatial kernel: `k = 2 × ⌊4τ⌋ + 1` |
 | **4. Marine Snow Noise** | Suspended particulate scattering | High-frequency salt-and-pepper noise overlay |
 
 ### Degradation Progression Samples
